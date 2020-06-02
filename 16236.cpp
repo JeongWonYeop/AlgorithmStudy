@@ -90,7 +90,7 @@ void dfs(int sizee, int xx,int yy, int count) {
 				shark[xx][yy] = 0;
 				visited[xx + x[i]][yy + y[i]] = 1;
 
-				dfs(sizee, xx + x[i], yy + y[i], newcount);
+				dfs(sizee, xx + x[i], yy + y[i], ++count);
 
 
 			}
@@ -100,7 +100,7 @@ void dfs(int sizee, int xx,int yy, int count) {
 				shark[xx][yy] = 0;
 				visited[xx + x[i]][yy + y[i]] = 1;
 
-				dfs(sizee, xx + x[i], yy + y[i], newcount);
+				dfs(sizee, xx + x[i], yy + y[i], ++count);
 
 			}
 			else if (space[xx + x[i]][yy + y[i]]>0 && space[xx + x[i]][yy + y[i]] < sizee) {
@@ -115,7 +115,7 @@ void dfs(int sizee, int xx,int yy, int count) {
 				space[xx + x[i]][yy + y[i]] = 0;
 				visited[xx + x[i]][yy + y[i]] = 1;
 
-				dfs(sizee, xx + x[i], yy + y[i], newcount);
+				dfs(sizee, xx + x[i], yy + y[i], ++count);
 
 			}
 		
