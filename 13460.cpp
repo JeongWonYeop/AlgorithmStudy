@@ -106,6 +106,10 @@ void algo(int Rx,int Ry, int Bx,int By,int cnt,int orient) {
 		cout << "min 작업 마침" <<min << endl;
 		return;
 	}
+	//파란 구슬 들어갔을 때, 실패에 대한 언급 없었다. 그게 버그 유발.
+	if (blueflag == 1) {
+		return;
+	}
 	if (NRx == NBx && NRy == NBy) {
 		cout << "겹쳤음" << endl;
 		if (abs((Rx - NRx) + (Ry - NRy)) > abs((Bx - NBx) + (By - NBy))) {
@@ -136,6 +140,6 @@ int main() {
 		algo(Rxx,Ryy,Bxx,Byy,1,i);
 	}
 	if (min == 987654321) cout << -1;
-	cout << min;
-	system("pause");
+	else cout << min;
+
 }
