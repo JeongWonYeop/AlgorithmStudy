@@ -1,0 +1,63 @@
+room[50][50]
+
+N M
+min = 2147483647;
+N*N 값입력.
+2의 위치 벡터에 담기.그리고 -2로 바꿔. 감염된건-3으로.
+1의 위치는 -1로 바꿔.
+
+dx = {0,0,-1,1};
+dy = {-1,1,0,0};
+//좌,우,위,아래
+
+퍼뜨리기(좌표x,좌표y,방향인자i,초cnt){
+	room[x][y] = -3;
+	nx=x+dx[i];
+	ny=y+dy[i];
+	if(room[nx][ny] == '-1'){
+		return;
+	}
+	if(room[nx][ny] == '-2'){
+		벡터.pushback(좌표,좌표);
+	}
+	if(room[nx][ny] == 0){
+		++zeroCnt;
+		room[nx][ny] = cnt;
+		포 i0~3
+		퍼뜨리기(nx,ny,i,cnt);
+	}
+}
+
+checkZero(){
+	room[][]안에 0이 더 이상 없는지 체크.
+	있으면 1 반환.
+}
+
+
+algo(벡터넘겨받기.){
+	M중포문{
+		int cnt =1;
+		int NM = M;
+		while(zeroCnt != 0){
+		zeroCnt = 0;
+		포문i=0~i=3{
+			포 j는 0부터 NM까지{
+				퍼뜨리기(벡터j.first,벡터j.second,i,cnt);
+			}
+		}
+		++cnt;
+		}
+		if(!checkZero()){
+			min = minn(min,cnt);
+		}
+	}
+}
+
+
+
+최종적으로 min 이 2147483647 이면 -1 반환.
+
+
+
+
+M에 따라서 M중 포문.
