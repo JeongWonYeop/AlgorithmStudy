@@ -62,6 +62,20 @@ void combination() {
 	
 
 }
+//유용하면 1, 아니면 0.
+void isUseful(int x, int y) {
+	if (x < 0 || y < 0 || x > N - 1 || y > N - 1) return;
+	for (int i = 0; i < 4; i++){
+		if (x + dx[i] >= 0 && x + dx[i] < N && y + dy[i] >= 0 && y + dy[i] < N && newboard[x + dx[i]][y + dy[i]] == 0) {
+			cout << newboard[x + dx[i]][y + dy[i]] << "가 유용하네" << endl;
+			cout << "그 x좌표와 y 좌표는" << x + dx[i] << "," << y + dy[i] << endl;
+			foradd = make_pair(x, y);
+			que2.push(foradd);
+			return;
+		}
+	}
+
+}
 
 int checkZero() {
 	for (int i = 0; i < N; i++) {
@@ -80,26 +94,46 @@ void printfordebug() {
 	}
 }
 
-void spread(int x, int y, int orient, int cnt, int * zerocnt) {
-	int nx = x + dx[orient];
-	int ny = y + dy[orient];
-	if (nx < 0 || ny < 0 || nx > N-1 || ny > N-1 ) return;
+void spread(int x, int y, int cnt, int * zerocnt) {
+	int nx;
+	int ny;
+	if (cnt == 0) {
+		++(*zerocnt);
+	}
+
 	//if (room[nx][ny] == -1) {
 	//}
-	if (newboard[nx][ny] == -2) {
-		foradd = make_pair(nx, ny);
-		que2.push(foradd);
-		newboard[nx][ny] = -3;
+	if (newboard[x][y] == -2) {
+		//카운트 증가시켜줄 필요없고, 다만, 해당 좌표도 퍼져나가는 역할할 수 있게 큐에 추가.
+		newboard[x][y] = -3;
+
+		for (int i = 0; i < 4; i++) {
+			nx = x + dx[i];
+			ny = y + dy[i];
+			isUseful(nx, ny);
+		}
+
+		printfordebug();
+		cout << "cnt : " << cnt << endl;
 	}
-	else if (newboard[nx][ny] == 0) {
-		cout << "nx : " << nx <<"ny : "<< ny<<endl;
+	else if (newboard[x][y] == 0) {
+		cout << "0인지점 x : " << x <<"y : "<< y<<endl;
 		++(*zerocnt);
-		newboard[nx][ny] = cnt;
-		foradd = make_pair(nx, ny);
-		que2.push(foradd);
+		newboard[x][y] = cnt;
+
+		for (int i = 0; i < 4; i++) {
+			nx = x + dx[i];
+			ny = y + dy[i];
+			isUseful(nx, ny);
+		}
+
+		printfordebug();
+		cout << "cnt : " << cnt << endl;
 	}
-	printfordebug();
-	cout << "cnt : " << cnt<< endl;
+
+
+
+	
 }
 
 void solve() {
@@ -109,7 +143,7 @@ void solve() {
 
 	do {
 		cout << "ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ" << endl;
-		int cnt = 1;
+		int cnt = 0;
 		int zeroCnt = 1;
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
@@ -124,29 +158,33 @@ void solve() {
 
 			}
 		}
-
+		/*
+		1. 해당 좌표기준으로 처음엔 시작이니까 당연히 인자 들어갈 때 cnt값 0으로 들어갔다가 상하좌우 퍼져나갈 애들 다 큐에 넣어주라.
+		cnt 값 증가 시키라.
+		
+		*/
 		while (zeroCnt != 0) {
 			zeroCnt = 0;
-			
 			while (!que2.empty()) {
 				que.push(que2.front());
 				cout << que.front().first << "큐2 " << que.front().second;
 				que2.pop();
 			}
+
 			while (!que.empty()) {
 				pair<int, int> tempvec = que.front();
 				cout << tempvec.first << "큐1 " << tempvec.second << endl;
-				
-				for (int i = 0; i < 4; i++) {
-					spread(tempvec.first, tempvec.second, i, cnt, &zeroCnt);
-				}
+				spread(tempvec.first, tempvec.second, cnt, &zeroCnt);
+		
 				que.pop();
 			}
-			++cnt;
+			cnt++;
 		}
+		//검사하기로는 더이상 퍼져나갈 곳이 없다.
+		//맵 전체로 봤을때도 빈공간이 없으면 그건 최솟값 만들어주기.
 		if (!checkZero()) {
-			--cnt;
-			minest = min(minest, --cnt);
+
+			minest = min(minest, cnt);
 		}
 
 	} while (next_permutation(ind.begin(), ind.end()));
