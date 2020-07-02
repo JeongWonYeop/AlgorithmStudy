@@ -61,7 +61,6 @@ void combination() {
 }
 //유용하면 1, 아니면 0.
 void isUseful(int x, int y,int * zerocnt) {
-	cout << "이즈유즈풀" << endl;
 	if (x < 0 || y < 0 || x > N - 1 || y > N - 1) return;
 	for (int i = 0; i < 4; i++){
 		int j = 0;
@@ -86,13 +85,6 @@ int checkZero() {
 	}
 	return 0;
 }
-void printfordebug() {
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			cout << newboard[i][j]<<" ";
-		}cout << endl;
-	}
-}
 
 void spread(int x, int y, int cnt, int * zerocnt) {
 	int nx;
@@ -113,11 +105,10 @@ void spread(int x, int y, int cnt, int * zerocnt) {
 			isUseful(nx, ny, zerocnt);
 		}
 		++(*zerocnt);
-		printfordebug();
-		cout << "cnt : " << cnt << endl;
+
 	}
 	else if (newboard[x][y] == 0) {
-		cout << "0인지점 x : " << x <<"y : "<< y<<endl;
+
 
 		newboard[x][y] = cnt;
 		
@@ -133,9 +124,6 @@ void spread(int x, int y, int cnt, int * zerocnt) {
 			isUseful(nx, ny, zerocnt);
 
 		}
-
-		printfordebug();
-		cout << "cnt : " << cnt << endl;
 	}
 
 
@@ -149,7 +137,6 @@ void solve() {
 
 
 	do {
-		cout << "ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ" << endl;
 		int cnt = 0;
 		int zeroCnt = 1;
 		while (!que2.empty()) { que2.pop(); }
@@ -176,13 +163,11 @@ void solve() {
 			zeroCnt = 0;
 			while (!que2.empty()) {
 				que.push(que2.front());
-				cout << que.front().first << "큐2 " << que.front().second;
 				que2.pop();
 			}
 
 			while (!que.empty()) {
 				pair<int, int> tempvec = que.front();
-				cout << tempvec.first << "큐1 " << tempvec.second << endl;
 				spread(tempvec.first, tempvec.second, cnt, &zeroCnt);
 		
 				que.pop();
@@ -210,5 +195,4 @@ int main() {
 	solve();
 	if (minest == 2147483647) cout << -1;
 	else cout << minest;
-	system("pause");
 }
