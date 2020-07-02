@@ -20,7 +20,7 @@ int dy[4] = { -1,1,0,0 };
 //좌,우,위,아래
 // 0과1을 저장 할 벡터 생성
 vector<int> ind;
-vector <int> index;
+
 queue <pair<int, int>> que;
 queue <pair<int, int>> que2;
 
@@ -43,9 +43,7 @@ void enterNum() {
 
 void combination() {
 	int ALL = vec.size();
-	for (int i = 0; i < ALL; i++) {
-		index.push_back(i);
-	}
+
 
 	// M개의 1 추가
 	for (int i = 0; i<M; i++) {
@@ -63,6 +61,7 @@ void combination() {
 }
 //유용하면 1, 아니면 0.
 void isUseful(int x, int y,int * zerocnt) {
+	cout << "이즈유즈풀" << endl;
 	if (x < 0 || y < 0 || x > N - 1 || y > N - 1) return;
 	for (int i = 0; i < 4; i++){
 		int j = 0;
@@ -113,7 +112,7 @@ void spread(int x, int y, int cnt, int * zerocnt) {
 			ny = y + dy[i];
 			isUseful(nx, ny, zerocnt);
 		}
-
+		++(*zerocnt);
 		printfordebug();
 		cout << "cnt : " << cnt << endl;
 	}
@@ -121,7 +120,7 @@ void spread(int x, int y, int cnt, int * zerocnt) {
 		cout << "0인지점 x : " << x <<"y : "<< y<<endl;
 
 		newboard[x][y] = cnt;
-
+		
 
 		for (int i = 0; i < 4; i++) {
 			nx = x + dx[i];
@@ -175,7 +174,6 @@ void solve() {
 		*/
 		while (zeroCnt != 0) {
 			zeroCnt = 0;
-
 			while (!que2.empty()) {
 				que.push(que2.front());
 				cout << que.front().first << "큐2 " << que.front().second;
