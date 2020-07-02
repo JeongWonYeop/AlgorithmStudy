@@ -24,7 +24,6 @@ vector <int> index;
 queue <pair<int, int>> que;
 queue <pair<int, int>> que2;
 
-
 void enterNum() {
 	cin >> N >> M;
 	for (int i = 0; i < N; i++) {
@@ -63,17 +62,19 @@ void combination() {
 
 }
 //유용하면 1, 아니면 0.
-void isUseful(int x, int y) {
+void isUseful(int x, int y,int * zerocnt) {
 	if (x < 0 || y < 0 || x > N - 1 || y > N - 1) return;
 	for (int i = 0; i < 4; i++){
-		if (x + dx[i] >= 0 && x + dx[i] < N && y + dy[i] >= 0 && y + dy[i] < N && newboard[x + dx[i]][y + dy[i]] == 0) {
-			cout << newboard[x + dx[i]][y + dy[i]] << "가 유용하네" << endl;
-			cout << "그 x좌표와 y 좌표는" << x + dx[i] << "," << y + dy[i] << endl;
+		int j = 0;
+		if (x + dx[i] >= 0 && x + dx[i] < N && y + dy[i] >= 0 && y + dy[i] < N ) {
 			foradd = make_pair(x, y);
 			que2.push(foradd);
 			return;
 		}
+		
+		// newboard[x + dx[i]][y + dy[i]] == 0 해줌으로써, -2 비활성 바이러스가 있더라도 빈공간이 모두 차면 종료되게끔 해주었다. 퍼져나갈 아이의 주변에 빈공간 있을 때만 추가하도록 했기 때문이다.
 	}
+	// 지금 상태는 장래성 있는 애들은 다 추가된 상태다. 장래성 없는 애들 중에.
 
 }
 
@@ -110,7 +111,7 @@ void spread(int x, int y, int cnt, int * zerocnt) {
 		for (int i = 0; i < 4; i++) {
 			nx = x + dx[i];
 			ny = y + dy[i];
-			isUseful(nx, ny);
+			isUseful(nx, ny, zerocnt);
 		}
 
 		printfordebug();
@@ -118,13 +119,20 @@ void spread(int x, int y, int cnt, int * zerocnt) {
 	}
 	else if (newboard[x][y] == 0) {
 		cout << "0인지점 x : " << x <<"y : "<< y<<endl;
-		++(*zerocnt);
+
 		newboard[x][y] = cnt;
+
 
 		for (int i = 0; i < 4; i++) {
 			nx = x + dx[i];
 			ny = y + dy[i];
-			isUseful(nx, ny);
+			if (newboard[nx][ny] == 0) {
+				++(*zerocnt);
+			}
+			// zerocnt를 늘려서, 큐가 한번 더 돌 수 있게 해주었고. 
+			// 
+			isUseful(nx, ny, zerocnt);
+
 		}
 
 		printfordebug();
@@ -164,6 +172,9 @@ void solve() {
 		
 		*/
 		while (zeroCnt != 0) {
+			if (!checkZero()) {
+				break;
+			}
 			zeroCnt = 0;
 			while (!que2.empty()) {
 				que.push(que2.front());
