@@ -153,6 +153,8 @@ void solve() {
 		cout << "けけけけけけけけけけけけけけけけけ" << endl;
 		int cnt = 0;
 		int zeroCnt = 1;
+		while (!que2.empty()) { que2.pop(); }
+		while (!que.empty()){ que.pop();  }
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
 				newboard[i][j] = room[i][j];
@@ -172,10 +174,8 @@ void solve() {
 		
 		*/
 		while (zeroCnt != 0) {
-			if (!checkZero()) {
-				break;
-			}
 			zeroCnt = 0;
+
 			while (!que2.empty()) {
 				que.push(que2.front());
 				cout << que.front().first << "泥2 " << que.front().second;
@@ -189,6 +189,11 @@ void solve() {
 		
 				que.pop();
 			}
+			if (!checkZero()) {
+				// 0戚 赤生檎, 1 --> 蒸生檎 0.
+				break;
+			}
+			
 			cnt++;
 		}
 		//伊紫馬奄稽澗 希戚雌 遁閃蟹哀 員戚 蒸陥.
