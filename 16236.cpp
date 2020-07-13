@@ -83,6 +83,7 @@ void checkp_f() {
 void mc(int X, int Y) {
 
 	// move and check
+	cout << "que3의 첫번째 값은 : " << que3.front().first << que3.front().second << endl;
 
 	/*큐 추가해주기*/
 	for (int i = 0; i < 4; i++) {
