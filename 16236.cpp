@@ -13,6 +13,7 @@ using namespace std;
 */
 int board[20][20] = { 0, };
 int dist[20][20] = { 0, };
+int ndist[20][20] = { 0, };
 int p_f[20][20] = { 0 , };
 int shark_size = 2;
 int e_f = 0; // eaten_fish
@@ -25,6 +26,9 @@ pair <int, int> foradd;
 queue <pair<int, int>> que;
 queue <pair<int, int>> que2;
 queue <pair<int, int>> que3;
+queue < pair <int, int> > que4;
+
+int mina = 2147483647;
 int now_x, now_y;
 int iseat = 0;
 int mindist;
@@ -39,6 +43,31 @@ int dx[4] = { 0,0,-1,1 };
 int dy[4] = { -1,1,0,0 };
 int sx, sy;
 
+void bfss(int a, int b) {
+	int minn = 2147483647;
+	for (int i = 0; i < 4; i++){
+		int na = a + dx[i];
+		int nb = b + dy[i];
+
+		if(na >= 0 && nb >= 0 && na < sizee && nb< sizee){
+			if (board[na][nb] == 0) {
+				ndist[na][nb] = ndist[a][b] + 1;
+			}
+			if (board[na][nb] > 0 && board[na][nb] < sizee) {
+				minn = board[na][nb];
+				foradd = make_pair(na, nb);
+				que3.push(foradd);
+			}
+			if (board[na][nb] > sizee) {
+				continue;
+			}
+			if (board[na][nb] == minn) break;
+			foradd = make_pair(na, nb);
+			que4.push(foradd);
+		}
+
+	}
+}
 
 void checkp_f() {
 	
@@ -52,28 +81,13 @@ void checkp_f() {
 		}
 	}
 
+	foradd = make_pair(sx, sy);
+	que4.push(foradd);
 
-	int minnnn = 9999999;
-	for (int i = 0; i < sizee; i++) {
-		for (int j = 0; j < sizee; j++) {
-			if (board[i][j] > 0 && board[i][j] < shark_size) {
-				if (abs(sx - i) + abs(sy - j) < minnnn) {
-					minnnn = abs(sx - i) + abs(sy - j);
-				}
-			}
-		}
+	while (!que4.empty()) {
+		bfss(que4.front().first, que4.front().second);
 	}
 
-	for (int i = 0; i < sizee; i++) {
-		for (int j = 0; j < sizee; j++) {
-			if (board[i][j] > 0 && board[i][j] < shark_size) {
-				if (abs(sx - i) + abs(sy - j) == minnnn) {
-					foradd = make_pair(i, j);
-					que3.push(foradd);
-				}
-			}
-		}
-	}
 
 
 }
@@ -83,7 +97,6 @@ void checkp_f() {
 void mc(int X, int Y) {
 
 	// move and check
-	cout << "que3의 첫번째 값은 : " << que3.front().first << que3.front().second << endl;
 
 	/*큐 추가해주기*/
 	for (int i = 0; i < 4; i++) {
