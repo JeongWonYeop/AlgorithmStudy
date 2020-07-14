@@ -241,7 +241,7 @@ int main() {
 	}
 
 	cout << mindist;
-	system("pause");
+
 	/*
 	for(int i =0 ; i < 4;i++){
 	mc(sx+dx[i],sy+dy[i]);
