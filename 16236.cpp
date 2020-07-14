@@ -15,6 +15,7 @@ using namespace std;
 int board[20][20] = { 0, };
 int dist[20][20] = { 0, };
 int ndist[20][20] = { 0, };
+int check_ndist[20][20] = { 0, };
 int p_f[20][20] = { 0 , };
 int shark_size = 2;
 int e_f = 0; // eaten_fish
@@ -55,6 +56,7 @@ void checkp_f(int sx, int sy) {
 	for (int i = 0; i < sizee; i++) {
 		for (int j = 0; j < sizee; j++) {
 			ndist[i][j] = 0;
+			check_ndist[i][j] = 0;
 		}
 	}
 	que4.push({ sx,sy });
@@ -75,9 +77,9 @@ void checkp_f(int sx, int sy) {
 			int ssy = que4.front().second;
 			int nsx = que4.front().first + dx[i];
 			int nsy = que4.front().second + dy[i];
-			if (nsx >= 0 && nsy >= 0 && nsx < sizee && nsy < sizee) {
-				if (ndist[ssx][ssy] + 1 > minn) return;
 			
+			if (nsx >= 0 && nsy >= 0 && nsx < sizee && nsy < sizee && check_ndist[nsx][nsy] != 1) {
+				if (ndist[ssx][ssy] + 1 > minn) return;
 			
 				if (board[nsx][nsy] == 0) {
 					ndist[nsx][nsy] = ndist[ssx][ssy] + 1;
@@ -89,17 +91,19 @@ void checkp_f(int sx, int sy) {
 				else if (board[nsx][nsy] > 0 && board[nsx][nsy] < shark_size) {
 					ndist[nsx][nsy] = ndist[ssx][ssy] + 1;
 					que3.push({ nsx,nsy });
-					cout << "que3에 입력" << nsx << "와" << nsy << endl;
+				cout << "que3에 입력" << nsx << "와" << nsy << endl;
 					minn = ndist[nsx][nsy];
 
 				}
+				
 				for (int i = 0; i < sizee; i++) {
 					for (int j = 0; j < sizee; j++) {
 						cout << ndist[i][j] << " ";
 					}cout << endl;
 				}
 				cout << endl;
-
+			
+				check_ndist[ssx][ssy] = 1;
 				que4.push({ nsx,nsy });
 				
 
@@ -136,7 +140,7 @@ void mc(int X, int Y) {
 					dist[nx][ny] = dist[X][Y] + 1;
 					mindist = dist[nx][ny];
 					iseat = 1;
-					cout << "물고기의 위치" << nx << ", " << ny << "까지 오는데" << dist[nx][ny] << "만큼의 시간이 걸렸다." << endl;
+//					cout << "물고기의 위치" << nx << ", " << ny << "까지 오는데" << dist[nx][ny] << "만큼의 시간이 걸렸다." << endl;
 					break;
 				}
 			}
@@ -145,14 +149,15 @@ void mc(int X, int Y) {
 		}
 	}
 
-
+	/*
 	for (int i = 0; i < sizee; i++) {
 		for (int j = 0; j < sizee; j++) {
 			cout << dist[i][j] << " ";
 		}cout << endl;
 	}
 	cout << endl;
-	/*큐 팝 */
+	*/
+
 
 
 
