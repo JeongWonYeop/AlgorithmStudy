@@ -6,9 +6,18 @@
 #include <functional>
 using namespace std;
 int check_board[101][101] = { 0, };
+int dx[5] = { 0, -1,1.0,0};
+int dy[5] = { 0, 0,0.1,-1};
+int R;
+int C;
+int M;
+/*
+위 아 오 왼
 
+0 0  0 1
+1 0  1 1
 
-
+*/
 typedef struct shark {
 	int r;
 	int c;
@@ -18,13 +27,42 @@ typedef struct shark {
 }Shark;
 
 
+
+
+/*
+s번 반복하고,
+d가 1일때 r가 -- 되고, 만약에 0이면 d를 2로 바꿔준다
+d가 2일때 r가 ++ 되고, 만약에 R이면 d를 1로 바꿔준다
+d가 3일때 c가 ++ 되고, 만약에 C이면 d를 4로
+d가 4일때 c가 -- , 0이면 d를 3로
+*/
 void shark_change(vector <Shark> & shark_i) {
-	shark_i[0].r = 999;
+	for (int i = 0; i < shark_i.size(); i++) {
+		int cnt = shark_i[i].s;
+		while (cnt > 0) {
+			if (shark_i[i].d == 1) {
+				shark_i[i].r = shark_i[i].r + dx[shark_i[i].d];
+				if (shark_i[i].r == 0) shark_i[i].d = 2;
+			}
+			else if (shark_i[i].d == 2) {
+				shark_i[i].r = shark_i[i].r + dx[shark_i[i].d];
+				if (shark_i[i].r == R) shark_i[i].d = 1;
+			}
+			else if (shark_i[i].d == 3) {
+				shark_i[i].c = shark_i[i].c + dy[shark_i[i].d];
+				if (shark_i[i].c == C) shark_i[i].d = 4;
+			}
+			else if (shark_i[i].d == 4) {
+				shark_i[i].c = shark_i[i].c + dy[shark_i[i].d];
+				if (shark_i[i].c == 0) shark_i[i].d = 3;
+			}
+			cnt--;
+		}
+
+	}
 }
 int main() {
-	int R;
-	int C;
-	int M;
+
 	cin >> R >> C >> M;
 	vector <Shark> shark_info;
 	for (int i = 0; i < M; i++) {
