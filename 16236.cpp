@@ -117,13 +117,14 @@ void checkp_f(int sx, int sy) {
 
 void mc(int X, int Y) {
 
+
 	// move and check
 
 	/*큐 추가해주기*/
 	for (int i = 0; i < 4; i++) {
 		int nx = X + dx[i];
 		int ny = Y + dy[i];
-		if (nx >= 0 && ny >= 0 && nx < sizee && ny < sizee) {
+		if (nx >= 0 && ny >= 0 && nx < sizee && ny < sizee && check_dist[nx][ny] != 1) {
 			if (board[nx][ny] == 0 || board[nx][ny] == shark_size) {
 				dist[nx][ny] = dist[X][Y] + 1;
 			}
@@ -148,6 +149,7 @@ void mc(int X, int Y) {
 			}
 			foradd = make_pair(nx, ny);
 			que.push(foradd);
+			check_dist[nx][ny] = 1;
 		}
 	}
 
@@ -224,6 +226,12 @@ int main() {
 			if (iseat == 1) {
 				while (!que.empty()) que.pop();
 				iseat = 0;
+
+				for (int i = 0; i < sizee; i++) {
+					for (int j = 0; j < sizee; j++) {
+						check_dist[i][j] = 0;
+					}
+				}
 				break;
 			}
 
