@@ -92,19 +92,19 @@ void checkp_f(int sx, int sy) {
 				else if (board[nsx][nsy] > 0 && board[nsx][nsy] < shark_size) {
 					ndist[nsx][nsy] = ndist[ssx][ssy] + 1;
 					que3.push({ nsx,nsy });
-				cout << "que3에 입력" << nsx << "와" << nsy << endl;
-				cout << "방향 : " << i << endl;
+//				cout << "que3에 입력" << nsx << "와" << nsy << endl;
+//				cout << "방향 : " << i << endl;
 					minn = ndist[nsx][nsy];
 
 				}
-				
+/*				
 				for (int i = 0; i < sizee; i++) {
 					for (int j = 0; j < sizee; j++) {
 						cout << ndist[i][j] << " ";
 					}cout << endl;
 				}
 				cout << endl;
-			
+*/
 				
 				que4.push({ nsx,nsy });
 				check_ndist[nsx][nsy] = 1;
@@ -143,7 +143,7 @@ void mc(int X, int Y) {
 					dist[nx][ny] = dist[X][Y] + 1;
 					mindist = dist[nx][ny];
 					iseat = 1;
-					cout << "물고기의 위치" << nx << ", " << ny << "까지 오는데" << dist[nx][ny] << "만큼의 시간이 걸렸다." << endl;
+//					cout << "물고기의 위치" << nx << ", " << ny << "까지 오는데" << dist[nx][ny] << "만큼의 시간이 걸렸다." << endl;
 					break;
 				}
 			}
@@ -152,14 +152,14 @@ void mc(int X, int Y) {
 			check_dist[nx][ny] = 1;
 		}
 	}
-
+/*
 	for (int i = 0; i < sizee; i++) {
 		for (int j = 0; j < sizee; j++) {
 			cout << dist[i][j] << " ";
 		}cout << endl;
 	}
 	cout << endl;
-
+*/
 
 
 
