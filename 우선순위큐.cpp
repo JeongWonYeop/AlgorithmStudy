@@ -8,13 +8,16 @@ typedef pair<int, int> Pair;
 
 struct cmp {
 	bool operator()(Pair x, Pair y) {
+		if (x.first == y.first) {
+			return x.second > y.second;
+		}
 		return x.first > y.first;
 	}
 };
 
 
 int main() {
-	priority_queue< Pair, vector<Pair>,greater<Pair>> pq;
+	priority_queue< Pair, vector<Pair>,cmp> pq;
 	pq.push(make_pair(1, 2));
 	pq.push(make_pair(2, 3));
 	pq.push(make_pair(4, 1));
