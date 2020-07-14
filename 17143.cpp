@@ -18,6 +18,9 @@ typedef struct shark {
 }Shark;
 
 
+void shark_change(vector <Shark> & shark_i) {
+	shark_i[0].r = 999;
+}
 int main() {
 	int R;
 	int C;
