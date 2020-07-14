@@ -5,7 +5,7 @@
 using namespace std;
 
 char board[10][10] = { NULL, };
-int min = 987654321;
+int minest = 987654321;
 // 왼 : 0 , 오 : 1 , 위 : 2, 아래 : 3
 int dx[4] = {0,0,-1,1};
 int dy[4] = {-1,1,0,0};
@@ -49,7 +49,7 @@ int abs(int a) {
 }
 
 int minn(int A, int B) {
-	cout << "min 작업중..." << endl;
+
 	if (A <= B) {
 		return A;
 	}
@@ -59,18 +59,9 @@ int minn(int A, int B) {
 }
 
 void algo(int Rx,int Ry, int Bx,int By,int cnt,int orient) {
-	if (orient == 0) {
-		cout << "<<왼쪽>>" << endl;
-	}
-	else if (orient == 1) {
-		cout << "<<오른쪽>>" << endl;
-	}
-	else if (orient == 2) {
-		cout << "<<위쪽>>" << endl;
-	}
-	else cout << "<<아래쪽>>" << endl;
 
-	if (cnt > min) return;
+
+	if (cnt > minest) return;
 	if (cnt > 10)  return;
 	int redflag = 0;
 	int blueflag = 0;
@@ -88,7 +79,7 @@ void algo(int Rx,int Ry, int Bx,int By,int cnt,int orient) {
 	}
 	NRx = NRx - dx[orient];
 	NRy = NRy - dy[orient];
-	cout << "R위치 :"<< NRx <<" "<< NRy << endl;
+
 
 	while (board[NBx][NBy] != '#') {
 		if (board[NBx][NBy] == 'O') {
@@ -100,10 +91,10 @@ void algo(int Rx,int Ry, int Bx,int By,int cnt,int orient) {
 	}
 	NBx = NBx - dx[orient];
 	NBy = NBy - dy[orient];
-	cout <<"B위치 :" << NBx <<" "<< NBy << endl;
+
 	if (redflag == 1 && blueflag == 0) {
-		min = minn(min, cnt);
-		cout << "min 작업 마침" <<min << endl;
+		minest = minn(minest, cnt);
+
 		return;
 	}
 	//파란 구슬 들어갔을 때, 실패에 대한 언급 없었다. 그게 버그 유발.
@@ -111,7 +102,7 @@ void algo(int Rx,int Ry, int Bx,int By,int cnt,int orient) {
 		return;
 	}
 	if (NRx == NBx && NRy == NBy) {
-		cout << "겹쳤음" << endl;
+
 		if (abs((Rx - NRx) + (Ry - NRy)) > abs((Bx - NBx) + (By - NBy))) {
 			NRx = NRx - dx[orient];
 			NRy = NRy - dy[orient];
@@ -121,11 +112,11 @@ void algo(int Rx,int Ry, int Bx,int By,int cnt,int orient) {
 			NBy = NBy - dy[orient];
 		}
 	}
-	cout << "cnt 값" << cnt << endl;
+
 	cnt++;
 	for(int i = 0 ; i<4; i++){
-		if (i == orient) continue;
-		if (i == change(orient)) continue;
+		if (i == orient) continue; // 같은 방향으로 한번 더 기울이는 거
+		if (i == change(orient)) continue; // 180도 반대방향으로 기울이는거
 		algo(NRx, NRy, NBx, NBy, cnt, i);
 	}
 }
@@ -139,7 +130,7 @@ int main() {
 	for(int i = 0 ; i<4; i++){
 		algo(Rxx,Ryy,Bxx,Byy,1,i);
 	}
-	if (min == 987654321) cout << -1;
-	else cout << min;
+	if (minest == 987654321) cout << -1;
+	else cout << minest;
 
 }
