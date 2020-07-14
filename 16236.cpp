@@ -14,8 +14,9 @@ using namespace std;
 */
 int board[20][20] = { 0, };
 int dist[20][20] = { 0, };
+int check_dist[20][20]={0,};  // 체크는 항상 초기화에 유의해 (0으로 만들어주는 초기화)
 int ndist[20][20] = { 0, };
-int check_ndist[20][20] = { 0, };
+int check_ndist[20][20] = { 0, };// 체크는 항상 초기화에 유의해 (0으로 만들어주는 초기화)
 int p_f[20][20] = { 0 , };
 int shark_size = 2;
 int e_f = 0; // eaten_fish
@@ -92,6 +93,7 @@ void checkp_f(int sx, int sy) {
 					ndist[nsx][nsy] = ndist[ssx][ssy] + 1;
 					que3.push({ nsx,nsy });
 				cout << "que3에 입력" << nsx << "와" << nsy << endl;
+				cout << "방향 : " << i << endl;
 					minn = ndist[nsx][nsy];
 
 				}
@@ -103,9 +105,9 @@ void checkp_f(int sx, int sy) {
 				}
 				cout << endl;
 			
-				check_ndist[ssx][ssy] = 1;
-				que4.push({ nsx,nsy });
 				
+				que4.push({ nsx,nsy });
+				check_ndist[nsx][nsy] = 1;
 
 			}
 		}
@@ -126,7 +128,7 @@ void mc(int X, int Y) {
 				dist[nx][ny] = dist[X][Y] + 1;
 			}
 			else if (board[nx][ny] > shark_size) continue;
-			else if (board[nx][ny] < shark_size){
+			else if (board[nx][ny] > 0 && board[nx][ny] < shark_size){
 				if (nx == que3.top().first && ny == que3.top().second) {
 					++e_f;
 					if (e_f == shark_size) {
@@ -140,7 +142,7 @@ void mc(int X, int Y) {
 					dist[nx][ny] = dist[X][Y] + 1;
 					mindist = dist[nx][ny];
 					iseat = 1;
-//					cout << "물고기의 위치" << nx << ", " << ny << "까지 오는데" << dist[nx][ny] << "만큼의 시간이 걸렸다." << endl;
+					cout << "물고기의 위치" << nx << ", " << ny << "까지 오는데" << dist[nx][ny] << "만큼의 시간이 걸렸다." << endl;
 					break;
 				}
 			}
@@ -149,14 +151,13 @@ void mc(int X, int Y) {
 		}
 	}
 
-	/*
 	for (int i = 0; i < sizee; i++) {
 		for (int j = 0; j < sizee; j++) {
 			cout << dist[i][j] << " ";
 		}cout << endl;
 	}
 	cout << endl;
-	*/
+
 
 
 
