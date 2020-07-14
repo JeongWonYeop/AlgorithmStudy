@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <queue>
 #include <utility>
+#include <functional>
 using namespace std;
 
 
@@ -25,7 +26,7 @@ int quepop2 = 0;
 pair <int, int> foradd;
 queue <pair<int, int>> que;
 queue <pair<int, int>> que2;
-queue <pair<int, int>> que3;
+priority_queue <pair<int, int>,vector<pair<int,int>>,greater<pair<int,int>>> que3;
 queue < pair <int, int> > que4;
 
 int mina = 2147483647;
@@ -43,56 +44,70 @@ int dx[4] = { 0,0,-1,1 };
 int dy[4] = { -1,1,0,0 };
 int sx, sy;
 
-void bfss(int a, int b) {
-	int minn = 2147483647;
-	for (int i = 0; i < 4; i++){
-		int na = a + dx[i];
-		int nb = b + dy[i];
 
-		if(na >= 0 && nb >= 0 && na < sizee && nb< sizee){
-			if (board[na][nb] == 0) {
-				ndist[na][nb] = ndist[a][b] + 1;
-			}
-			if (board[na][nb] > 0 && board[na][nb] < sizee) {
-				minn = board[na][nb];
-				foradd = make_pair(na, nb);
-				que3.push(foradd);
-			}
-			if (board[na][nb] > sizee) {
-				continue;
-			}
-			if (board[na][nb] == minn) break;
-			foradd = make_pair(na, nb);
-			que4.push(foradd);
-		}
-
+void checkp_f(int sx, int sy) {
+	while (!que4.empty()) {
+		que4.pop();
 	}
-}
-
-void checkp_f() {
-	
 	while (!que3.empty()) {
 		que3.pop();
 	}
-
 	for (int i = 0; i < sizee; i++) {
 		for (int j = 0; j < sizee; j++) {
-			dist[i][j] = 0;
+			ndist[i][j] = 0;
 		}
 	}
+	que4.push({ sx,sy });
+	int minn = 987654321;
 
-	foradd = make_pair(sx, sy);
-	que4.push(foradd);
+	while(!que4.empty()){
+		int aa = 0;
+		for (int i = 0; i < sizee; i++) {
+			for (int j = 0; j < sizee; j++) {
+				if (board[i][j] > 0 && board[i][j] < shark_size) {
+					aa = 1;
+				}
+			}
+		}
+		if (aa == 0) return;
+		for(int i = 0 ; i < 4 ; i++){
+			int ssx = que4.front().first;
+			int ssy = que4.front().second;
+			int nsx = que4.front().first + dx[i];
+			int nsy = que4.front().second + dy[i];
+			if (nsx >= 0 && nsy >= 0 && nsx < sizee && nsy < sizee) {
+				if (ndist[ssx][ssy] + 1 > minn) return;
+			
+			
+				if (board[nsx][nsy] == 0) {
+					ndist[nsx][nsy] = ndist[ssx][ssy] + 1;
+				}
+				else if (board[nsx][nsy] == shark_size) {
+					ndist[nsx][nsy] = ndist[ssx][ssy] + 1;
+				}
+				else if (board[nsx][nsy] > shark_size) continue;
+				else if (board[nsx][nsy] > 0 && board[nsx][nsy] < shark_size) {
+					ndist[nsx][nsy] = ndist[ssx][ssy] + 1;
+					que3.push({ nsx,nsy });
+					cout << "que3에 입력" << nsx << "와" << nsy << endl;
+					minn = ndist[nsx][nsy];
 
-	while (!que4.empty()) {
-		bfss(que4.front().first, que4.front().second);
+				}
+				for (int i = 0; i < sizee; i++) {
+					for (int j = 0; j < sizee; j++) {
+						cout << ndist[i][j] << " ";
+					}cout << endl;
+				}
+				cout << endl;
+
+				que4.push({ nsx,nsy });
+				
+
+			}
+		}
+		que4.pop();
 	}
-
-
-
 }
-
-
 
 void mc(int X, int Y) {
 
@@ -108,7 +123,7 @@ void mc(int X, int Y) {
 			}
 			else if (board[nx][ny] > shark_size) continue;
 			else if (board[nx][ny] < shark_size){
-				if (nx == que3.front().first && ny == que3.front().second) {
+				if (nx == que3.top().first && ny == que3.top().second) {
 					++e_f;
 					if (e_f == shark_size) {
 						++shark_size;
@@ -178,8 +193,10 @@ int main() {
 		그러면서 우선순위 큐에 닿을 때까지 
 	
 	*/
+
 	while (true) {
-		checkp_f();
+		checkp_f(sx,sy);
+
 		if (que3.empty()) break;
 
 		foradd = make_pair(sx, sy);
@@ -201,8 +218,6 @@ int main() {
 			if (iseat == 1) {
 				while (!que.empty()) que.pop();
 				iseat = 0;
-				resultdist = resultdist + mindist;
-				mindist = 0;
 				break;
 			}
 
@@ -211,7 +226,7 @@ int main() {
 		}
 	}
 
-	cout << resultdist;
+	cout << mindist;
 	system("pause");
 	/*
 	for(int i =0 ; i < 4;i++){
