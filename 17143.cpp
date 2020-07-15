@@ -151,11 +151,11 @@ int main() {
 	}
 
 
-	//while(people_C < C){
+	while(people_C < C){
 
-	//	catch_shark(shark_info);
+		catch_shark(shark_info);
 		shark_change(shark_info);
-	//	check_shark(shark_info);
+		check_shark(shark_info);
 
 	
 
@@ -166,7 +166,7 @@ int main() {
 
 	cout << result<<endl;
 
-	//}
+	}
 	system("pause");
 
 }
