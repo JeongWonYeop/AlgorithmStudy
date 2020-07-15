@@ -45,7 +45,7 @@ d가 4일때 c가 -- , 0이면 d를 3로
 
 /* 이부분 문제 잘못읽어서 다시 짜야한다. 2마리 이상 있을 수 있다 인데 없다 로 봤다.*/
 void check_shark(vector <Shark> &shark_i) {
-	priority_queue < pair<int,int>, vector <pair<int, int>>, less<pair<int, int>> > less_sharklist;
+	
 	for (int i = 1; i < R + 1; i++) {
 		for (int j = 1; j < C + 1; j++) {
 			check_board[i][j] = 0;
@@ -53,38 +53,36 @@ void check_shark(vector <Shark> &shark_i) {
 	}
 
 	for (int i = 0; i < shark_i.size(); i++) {
-		++check_board[shark_i[i].r][shark_i[i].c];
-		if (check_board[shark_i[i].r][shark_i[i].c] == 2) {
-			 foradd = { shark_i[i].r , shark_i[i].c };
-			 temp_que.push(foradd);
-		}
+		check_board[shark_i[i].r][shark_i[i].c]++;
 	}
 
-	while (!temp_que.empty()) {
-		for (int i = 0; i < shark_i.size(); i++) {
-			if (shark_i[i].r == temp_que.front().first && shark_i[i].c == temp_que.front().second) {
-				less_sharklist.push({ shark_i[i].z , i});
+	priority_queue<pair<int, int>, vector<pair<int, int>>, less<pair<int, int>>>p_tq;
+	for (int i = 0; i < shark_i.size(); i++) {
+		if (check_board[shark_i[i].r][shark_i[i].c] >= 2) {
+
+			while (!p_tq.empty()) {
+				p_tq.pop();
 			}
-		}
-		less_sharklist.pop();
-		priority_queue <int, vector<int>, less<int>> t_q;
-		while (!less_sharklist.empty()) {
-			t_q.push(less_sharklist.top().second);
-			less_sharklist.pop();
-		}
-		while (!t_q.empty()) {
-			shark_i.erase(shark_i.begin() + t_q.top());
-			t_q.pop();
-		}
+
+			for (int j = 0; j < shark_i.size(); j++) {
+				if (shark_i[j].r == shark_i[i].r && shark_i[j].c == shark_i[i].c) {
+					p_tq.push({ shark_i[j].z, j});
+				}
+			}
+
+			int big_shark = p_tq.top().first;
+
+			for (vector<Shark>::iterator j = shark_i.begin() ; j != shark_i.end();) {
+				if ((*j).r == shark_i[i].r && (*j).c == shark_i[i].c && (*j).z != big_shark) {
+					j = shark_i.erase(j);
+				}
+				else j++;
+			}
 
 
-		temp_que.pop();
+
+		}
 	}
-
-
-
-
-
 
 }
 
