@@ -2,15 +2,20 @@
 #include <iostream>
 #include <stdlib.h>
 #include <vector>
+#include <queue>
+#include <functional>
 #include <utility>
 #include <functional>
 using namespace std;
 int check_board[101][101] = { 0, };
-int dx[5] = { 0, -1,1.0,0};
-int dy[5] = { 0, 0,0.1,-1};
+int dx[5] = { 0, -1,1,0,0};
+int dy[5] = {0,0,0,1,-1};
 int R;
 int C;
 int M;
+int people_C = 0;
+int result = 0;
+int erase_index = -1;
 /*
 위 아 오 왼
 
@@ -36,31 +41,105 @@ d가 2일때 r가 ++ 되고, 만약에 R이면 d를 1로 바꿔준다
 d가 3일때 c가 ++ 되고, 만약에 C이면 d를 4로
 d가 4일때 c가 -- , 0이면 d를 3로
 */
+
+
+void check_shark(vector <Shark> &shark_i) {
+	for (int i = 1; i < R+1; i++) {
+		for (int j = 1; j < C + 1; j++) {
+			check_board[i][j] = 0;
+		}
+	}
+
+	for (int i = 0; i < shark_i.size(); i++) {
+		++check_board[shark_i[i].r][shark_i[i].c];
+		if (check_board[shark_i[i].r][shark_i[i].c] == 2) {
+			for (int j = 0; j < i; j++) {
+				if (shark_i[j].r == shark_i[i].r && shark_i[j].c == shark_i[i].c) {
+					if (shark_i[j].z < shark_i[i].z) {
+						cout << j << endl;
+						erase_index = j;
+					}
+					else {
+						cout << i << endl;
+						erase_index = i;
+					}
+				}
+			}
+			--check_board[shark_i[i].r][shark_i[i].c];
+		}
+		if (erase_index != -1) {
+			shark_i.erase(shark_i.begin() + erase_index);
+			erase_index = -1;
+		}
+	}
+
+	
+}
+
+
 void shark_change(vector <Shark> & shark_i) {
 	for (int i = 0; i < shark_i.size(); i++) {
 		int cnt = shark_i[i].s;
 		while (cnt > 0) {
 			if (shark_i[i].d == 1) {
 				shark_i[i].r = shark_i[i].r + dx[shark_i[i].d];
-				if (shark_i[i].r == 0) shark_i[i].d = 2;
+				if (shark_i[i].r == 0) {
+					++shark_i[i].r;
+					++shark_i[i].r;
+					shark_i[i].d = 2;
+				}
 			}
 			else if (shark_i[i].d == 2) {
 				shark_i[i].r = shark_i[i].r + dx[shark_i[i].d];
-				if (shark_i[i].r == R) shark_i[i].d = 1;
+				if (shark_i[i].r == R+1) {
+					--shark_i[i].r; // 갔던거 취소하므로, 그자리 유지.
+					--shark_i[i].r; // 다시 한칸 튕겨져나와야되므로.
+					shark_i[i].d = 1;
+				}
 			}
 			else if (shark_i[i].d == 3) {
 				shark_i[i].c = shark_i[i].c + dy[shark_i[i].d];
-				if (shark_i[i].c == C) shark_i[i].d = 4;
+				if (shark_i[i].c == C+1) {
+					--shark_i[i].c;
+					--shark_i[i].c;
+					shark_i[i].d = 4;
+				}
 			}
 			else if (shark_i[i].d == 4) {
 				shark_i[i].c = shark_i[i].c + dy[shark_i[i].d];
-				if (shark_i[i].c == 0) shark_i[i].d = 3;
+				if (shark_i[i].c == 0) {
+					++shark_i[i].c;
+					++shark_i[i].c;
+					shark_i[i].d = 3;
+				}
 			}
 			cnt--;
 		}
 
 	}
 }
+
+void catch_shark(vector <Shark> & shark_i) {
+	++people_C;
+	priority_queue < int, vector <int>, greater<int> > catch_shark_queue;
+	while (!catch_shark_queue.empty()) {
+		catch_shark_queue.pop();
+	}
+	for (int i = 0; i < shark_i.size(); i++) {
+		if (shark_i[i].c == people_C) {
+			catch_shark_queue.push(shark_i[i].r);
+		}
+	}
+
+	for (int i = 0; i < shark_i.size(); i++) {
+		if (shark_i[i].c == people_C && shark_i[i].r == catch_shark_queue.top()) {
+			result = result + shark_i[i].z;
+			shark_i.erase(shark_i.begin() + i);
+		}
+	}
+
+}
+
 int main() {
 
 	cin >> R >> C >> M;
@@ -71,11 +150,23 @@ int main() {
 		shark_info.push_back({ r,c,s,d,z });
 	}
 
-	shark_change(shark_info);
+
+	//while(people_C < C){
+
+	//	catch_shark(shark_info);
+		shark_change(shark_info);
+	//	check_shark(shark_info);
+
+	
 
 	for(int i = 0 ; i < shark_info.size() ; i++){
 		cout << shark_info[i].r << " " << shark_info[i].c << " " << shark_info[i].s <<" " <<shark_info[i].d <<" "<< shark_info[i].z <<endl;
 	}
+
+
+	cout << result<<endl;
+
+	//}
 	system("pause");
 
 }
@@ -94,9 +185,10 @@ x3,y3
 상어움직임<구조체 백터>-> 상어정리 -> 사람 움직임(캐치) <반복>
 
 
+사람움직임 : 벡터 검색 후 C가 (people_C)1인 해당 벡터 크기 result+size 해주고, erase.
 상어움직임 : 
 상어정리 : 체크보드 초기화 ,상어 좌표 입력-> 2인 좌표. -> 벡터 검색 후 작은 벡터 erase.
-사람움직임 : 벡터 검색 후 C가 (people_C)1인 해당 벡터 크기 result+size 해주고, erase.
+
 people_C 증가시키면서 반복. C+1이 되기전까지.
 
 */
