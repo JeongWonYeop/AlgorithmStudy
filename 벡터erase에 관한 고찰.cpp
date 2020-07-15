@@ -13,19 +13,40 @@ int main() {
 		말하고싶은 것은, 1[0] 2[1] 3[2]에서 1[0] 삭제하고 나면 2[0] 3[1] 이 된다는 것이다.
 	*/
 	vector <int> arr;
+	vector <int> arr2;
 	arr.push_back(1);
 	arr.push_back(2);
 	arr.push_back(3);
+
 	for(int i = 0 ; i<arr.size();i++)
 	cout << arr[i] << " ";
 	cout << endl;
-
-	arr.erase(arr.begin());
-	arr.erase(arr.begin()+1);
+	
+	//반복문을 통해서 erase 할 때.
+	//틀린 예
+	for(int i = 0 ; i<arr.size(); i++){
+		arr.erase(arr.begin()+i);
+	}
 
 	for (int i = 0; i<arr.size(); i++)
 		cout << arr[i] << " ";
 	cout << endl;
+
+	arr2.push_back(1);
+	arr2.push_back(2);
+	arr2.push_back(3);
+	//옳은 예
+	for (vector<int>::iterator iter = arr2.begin(); iter != arr2.end(); ) {
+		if(*iter == 2){
+			iter = arr2.erase(iter);
+			//삭제하고 다음 위칫값(주솟값) 반환
+		}else iter++;
+	}
+
+	for (int i = 0; i<arr2.size(); i++)
+		cout << arr2[i] << " ";
+	cout << endl;
+
 	system("pause");
 
 }
