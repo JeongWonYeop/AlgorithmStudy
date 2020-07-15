@@ -15,7 +15,8 @@ int C;
 int M;
 int people_C = 0;
 int result = 0;
-int erase_index = -1;
+pair <int, int> foradd;
+queue <pair <int, int>> temp_que;
 /*
 위 아 오 왼
 
@@ -42,8 +43,9 @@ d가 3일때 c가 ++ 되고, 만약에 C이면 d를 4로
 d가 4일때 c가 -- , 0이면 d를 3로
 */
 
-
+/* 이부분 문제 잘못읽어서 다시 짜야한다. 2마리 이상 있을 수 있다 인데 없다 로 봤다.*/
 void check_shark(vector <Shark> &shark_i) {
+	priority_queue < pair<int,int>, vector <pair<int, int>>, less<pair<int, int>> > less_sharklist;
 	for (int i = 1; i < R + 1; i++) {
 		for (int j = 1; j < C + 1; j++) {
 			check_board[i][j] = 0;
@@ -53,27 +55,35 @@ void check_shark(vector <Shark> &shark_i) {
 	for (int i = 0; i < shark_i.size(); i++) {
 		++check_board[shark_i[i].r][shark_i[i].c];
 		if (check_board[shark_i[i].r][shark_i[i].c] == 2) {
-			for (int j = 0; j < i; j++) {
-				if (shark_i[j].r == shark_i[i].r && shark_i[j].c == shark_i[i].c) {
-					if (shark_i[j].z < shark_i[i].z) {
-						cout << j << endl;
-					
-						shark_i.erase(shark_i.begin() + j);
-					}
-					else {
-						cout << i << endl;
-						erase_index = i;
-						shark_i.erase(shark_i.begin() + i);
-					}
-				}
-			}
-			--check_board[shark_i[i].r][shark_i[i].c];
-		}
-		if (erase_index != -1) {
-			
-			erase_index = -1;
+			 foradd = { shark_i[i].r , shark_i[i].c };
+			 temp_que.push(foradd);
 		}
 	}
+
+	while (!temp_que.empty()) {
+		for (int i = 0; i < shark_i.size(); i++) {
+			if (shark_i[i].r == temp_que.front().first && shark_i[i].c == temp_que.front().second) {
+				less_sharklist.push({ shark_i[i].z , i});
+			}
+		}
+		less_sharklist.pop();
+		priority_queue <int, vector<int>, less<int>> t_q;
+		while (!less_sharklist.empty()) {
+			t_q.push(less_sharklist.top().second);
+			less_sharklist.pop();
+		}
+		while (!t_q.empty()) {
+			shark_i.erase(shark_i.begin() + t_q.top());
+			t_q.pop();
+		}
+
+
+		temp_que.pop();
+	}
+
+
+
+
 
 
 }
@@ -150,6 +160,7 @@ int main() {
 		int r, c, s, d, z;
 		cin >> r >> c >> s >> d >> z;
 		shark_info.push_back({ r,c,s,d,z });
+
 	}
 
 
@@ -159,16 +170,13 @@ int main() {
 		shark_change(shark_info);
 		check_shark(shark_info);
 
+	}
 
-
-		for (int i = 0; i < shark_info.size(); i++) {
-			cout << shark_info[i].r << " " << shark_info[i].c << " " << shark_info[i].s << " " << shark_info[i].d << " " << shark_info[i].z << endl;
-		}
-
+	
 
 		cout << result << endl;
 
-	}
+
 	system("pause");
 
 }
