@@ -45,26 +45,26 @@ d가 4일때 c가 -- , 0이면 d를 3로
 
 /* 이부분 문제 잘못읽어서 다시 짜야한다. 2마리 이상 있을 수 있다 인데 없다 로 봤다.*/
 void check_shark(vector <Shark> &shark_i) {
-	
-	for (int i = 1; i < R + 1; i++) {
+	 
+	for (int i = 1; i < R + 1; i++) {  // O(N) 최대 100
 		for (int j = 1; j < C + 1; j++) {
 			check_board[i][j] = 0;
 		}
 	}
 
-	for (int i = 0; i < shark_i.size(); i++) {
+	for (int i = 0; i < shark_i.size(); i++) {  // O(N) 최대 10000
 		check_board[shark_i[i].r][shark_i[i].c]++;
 	}
 
 	priority_queue<pair<int, int>, vector<pair<int, int>>, less<pair<int, int>>>p_tq;
-	for (int i = 0; i < shark_i.size(); i++) {
-		if (check_board[shark_i[i].r][shark_i[i].c] >= 2) {
+	for (int i = 0; i < shark_i.size(); i++) {  // O(N) 최대 10000
+		if (check_board[shark_i[i].r][shark_i[i].c] >= 2) { 
 
 			while (!p_tq.empty()) {
 				p_tq.pop();
 			}
 
-			for (int j = 0; j < shark_i.size(); j++) {
+			for (int j = 0; j < shark_i.size(); j++) {   // O(N)안에서 또O(N) 연산하므로, O(N^2) 최대 10000*10000 = 10^8 -> 여기서 거진 1초 다씀.
 				if (shark_i[j].r == shark_i[i].r && shark_i[j].c == shark_i[i].c) {
 					p_tq.push({ shark_i[j].z, j});
 				}
@@ -87,11 +87,11 @@ void check_shark(vector <Shark> &shark_i) {
 }
 
 
-void shark_change(vector <Shark> & shark_i) {
-	for (int i = 0; i < shark_i.size(); i++) {
+void shark_change(vector <Shark> & shark_i) { 
+	for (int i = 0; i < shark_i.size(); i++) { // O(N) 최대 10000
 		int cnt = shark_i[i].s;
-		while (cnt > 0) {
-			if (shark_i[i].d == 1) {
+		while (cnt > 0) {                      // O(N)안에서 O(M) 만큼 연산하므로, O(NxM) 최대 10000x1000 -> 10^7
+			if (shark_i[i].d == 1) { 
 				shark_i[i].r = shark_i[i].r + dx[shark_i[i].d];
 				if (shark_i[i].r == 0) {
 					++shark_i[i].r;
@@ -135,13 +135,13 @@ void catch_shark(vector <Shark> & shark_i) {
 	while (!catch_shark_queue.empty()) {
 		catch_shark_queue.pop();
 	}
-	for (int i = 0; i < shark_i.size(); i++) {
+	for (int i = 0; i < shark_i.size(); i++) { // O(N) 최대 10000
 		if (shark_i[i].c == people_C) {
 			catch_shark_queue.push(shark_i[i].r);
 		}
 	}
 
-	for (int i = 0; i < shark_i.size(); i++) {
+	for (int i = 0; i < shark_i.size(); i++) { // O(N) 최대 10000
 		if (shark_i[i].c == people_C && shark_i[i].r == catch_shark_queue.top()) {
 			result = result + shark_i[i].z;
 			shark_i.erase(shark_i.begin() + i);
@@ -162,13 +162,13 @@ int main() {
 	}
 
 
-	while (people_C < C) {
+	while (people_C < C) { // O(N) 최대 100 -> 10^2
 
-		catch_shark(shark_info);
-		shark_change(shark_info);
-		check_shark(shark_info);
+		catch_shark(shark_info); // 10^8
+		shark_change(shark_info); // 10^7
+		check_shark(shark_info); // 10^4
 
-	}
+	} // 10^8 x 10^2 -> 10^10 /10^8(1억) -> 어림잡아 계산해도 100초 -> 제한시간 1초 한참 초과했다.
 
 	
 
