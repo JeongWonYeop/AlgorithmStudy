@@ -7,7 +7,7 @@
 #include <utility>
 #include <functional>
 using namespace std;
-int check_board[101][101] = { 0, };
+
 int dx[5] = { 0, -1,1,0,0 };
 int dy[5] = { 0,0,0,1,-1 };
 int R;
@@ -32,7 +32,14 @@ typedef struct shark {
 	int z;
 }Shark;
 
+typedef struct check {
+	int x;
+	int y;
+	int z;
+	int cnt;
+}Check;
 
+Check check_board[101][101] = { 0, };
 
 
 /*
@@ -44,87 +51,87 @@ d가 4일때 c가 -- , 0이면 d를 3로
 */
 
 /* 이부분 문제 잘못읽어서 다시 짜야한다. 2마리 이상 있을 수 있다 인데 없다 로 봤다.*/
-void check_shark(vector <Shark> &shark_i) {
-	 
-	for (int i = 1; i < R + 1; i++) {  // O(N) 최대 100
-		for (int j = 1; j < C + 1; j++) {
-			check_board[i][j] = 0;
+void check_shark(vector <Shark> &shark_i) { // 10^6 이하로 짜볼 것
+	for (vector <Shark> ::iterator iter = shark_i.begin(); iter != shark_i.end();) {
+		check_board[(*iter).r][(*iter).c].cnt++;
+		check_board[(*iter).r][(*iter).c].x = (*iter).r;
+		check_board[(*iter).r][(*iter).c].y = (*iter).c;
+		check_board[(*iter).r][(*iter).c].z = (*iter).z;
+		if (check_board[(*iter).r][(*iter).c].cnt == 2) {
+			check_board[(*iter).r][(*iter).c] = (*iter).z;
 		}
-	}
-
-	for (int i = 0; i < shark_i.size(); i++) {  // O(N) 최대 10000
-		check_board[shark_i[i].r][shark_i[i].c]++;
-	}
-
-	priority_queue<pair<int, int>, vector<pair<int, int>>, less<pair<int, int>>>p_tq;
-	for (int i = 0; i < shark_i.size(); i++) {  // O(N) 최대 10000
-		if (check_board[shark_i[i].r][shark_i[i].c] >= 2) { 
-
-			while (!p_tq.empty()) {
-				p_tq.pop();
-			}
-
-			for (int j = 0; j < shark_i.size(); j++) {   // O(N)안에서 또O(N) 연산하므로, O(N^2) 최대 10000*10000 = 10^8 -> 여기서 거진 1초 다씀.
-				if (shark_i[j].r == shark_i[i].r && shark_i[j].c == shark_i[i].c) {
-					p_tq.push({ shark_i[j].z, j});
-				}
-			}
-
-			int big_shark = p_tq.top().first;
-
-			for (vector<Shark>::iterator j = shark_i.begin() ; j != shark_i.end();) {
-				if ((*j).r == shark_i[i].r && (*j).c == shark_i[i].c && (*j).z != big_shark) {
-					j = shark_i.erase(j);
-				}
-				else j++;
-			}
-
-
+		else if(){
 
 		}
 	}
-
 }
 
 
 void shark_change(vector <Shark> & shark_i) { 
-	for (int i = 0; i < shark_i.size(); i++) { // O(N) 최대 10000
+	for (int i = 0; i < shark_i.size(); i++) { // O(N) 최대 10000  // O(N)안에서 O(M) 만큼 연산하므로, O(NxM) 최대 10000x100 100연산 이하로 짜볼 것.
 		int cnt = shark_i[i].s;
-		while (cnt > 0) {                      // O(N)안에서 O(M) 만큼 연산하므로, O(NxM) 최대 10000x1000 -> 10^7
-			if (shark_i[i].d == 1) { 
-				shark_i[i].r = shark_i[i].r + dx[shark_i[i].d];
-				if (shark_i[i].r == 0) {
-					++shark_i[i].r;
-					++shark_i[i].r;
-					shark_i[i].d = 2;
-				}
+		if (cnt == 0) continue;
+
+		if (shark_i[i].d == 1) { 
+			if (cnt > (R - 1) * 2) {
+				cnt = cnt % ((R - 1) * 2);
 			}
-			else if (shark_i[i].d == 2) {
-				shark_i[i].r = shark_i[i].r + dx[shark_i[i].d];
-				if (shark_i[i].r == R + 1) {
-					--shark_i[i].r; // 갔던거 취소하므로, 그자리 유지.
-					--shark_i[i].r; // 다시 한칸 튕겨져나와야되므로.
-					shark_i[i].d = 1;
-				}
+			if (cnt == 0) continue;
+			if (shark_i[i].r == R) shark_i[i].d = 2;
+			if (shark_i[i].r - cnt > 0) {
+				shark_i[i].r = shark_i[i].r - cnt;
 			}
-			else if (shark_i[i].d == 3) {
-				shark_i[i].c = shark_i[i].c + dy[shark_i[i].d];
-				if (shark_i[i].c == C + 1) {
-					--shark_i[i].c;
-					--shark_i[i].c;
-					shark_i[i].d = 4;
-				}
+			else if (shark_i[i].r - cnt <= 0) {
+				shark_i[i].r = 1 - (shark_i[i].r - cnt) + 1;
+				shark_i[i].d = 2;
 			}
-			else if (shark_i[i].d == 4) {
-				shark_i[i].c = shark_i[i].c + dy[shark_i[i].d];
-				if (shark_i[i].c == 0) {
-					++shark_i[i].c;
-					++shark_i[i].c;
-					shark_i[i].d = 3;
-				}
-			}
-			cnt--;
 		}
+		else if (shark_i[i].d == 2) {
+			if (cnt > (R - 1) * 2) {
+				cnt = cnt % ((R - 1) * 2);
+			}
+			if (cnt == 0) continue;
+			if (shark_i[i].r == 1) shark_i[i].d = 1;
+			if (shark_i[i].r + cnt < R + 1) {
+				shark_i[i].r = shark_i[i].r + cnt;
+			}
+			else {
+				shark_i[i].r = R - (shark_i[i].r + cnt - R);
+				shark_i[i].d = 1;
+			}
+		}
+		else if (shark_i[i].d == 3) {
+			if (cnt > (C - 1) * 2) {
+				cnt = cnt % ((C - 1) * 2);
+			}
+			if (cnt == 0) continue;
+			if (shark_i[i].c == 1) shark_i[i].d = 4;
+			if (shark_i[i].c + cnt < C + 1) {
+				shark_i[i].c = shark_i[i].c + cnt;
+			}
+			else {
+				shark_i[i].c = C - (shark_i[i].c + cnt - C);
+				shark_i[i].d = 4;
+			}
+
+		}
+		else if (shark_i[i].d == 4) {
+			if (cnt > (C - 1) * 2) {
+				cnt = cnt % ((C - 1) * 2);
+			}
+			if (cnt == 0) continue;
+			if (shark_i[i].c == C) shark_i[i].d = 3;
+			if (shark_i[i].c - cnt > 0) {
+				shark_i[i].c = shark_i[i].c - cnt;
+			}
+			else if (shark_i[i].r - cnt <= 0) {
+				shark_i[i].c = 1 - (shark_i[i].c - cnt) + 1;
+				shark_i[i].d = 3;
+			}
+
+		}
+
+	
 
 	}
 }
@@ -162,15 +169,19 @@ int main() {
 	}
 
 
-	while (people_C < C) { // O(N) 최대 100 -> 10^2
+	//while (people_C < C) { // O(N) 최대 100 -> 10^2
 
-		catch_shark(shark_info); // 10^8
-		shark_change(shark_info); // 10^7
-		check_shark(shark_info); // 10^4
+		catch_shark(shark_info); // 10^4
+		shark_change(shark_info); // 10^4
+		check_shark(shark_info); // 
 
-	} // 10^8 x 10^2 -> 10^10 /10^8(1억) -> 어림잡아 계산해도 100초 -> 제한시간 1초 한참 초과했다.
+//	} // 10^8 x 10^2 -> 10^10 /10^8(1억) -> 어림잡아 계산해도 100초 -> 제한시간 1초 한참 초과했다.
 
 	
+
+	for (int i = 0; i < shark_info.size(); i++) {
+		cout << shark_info[i].r << " " << shark_info[i].c << " " << shark_info[i].s << " " << shark_info[i].d << " " << shark_info[i].z << endl;
+	}
 
 		cout << result << endl;
 
