@@ -30,16 +30,9 @@ typedef struct shark {
 	int s;
 	int d;
 	int z;
+	int death = 0;
 }Shark;
 
-typedef struct check {
-	int x;
-	int y;
-	int z;
-	int cnt;
-}Check;
-
-Check check_board[101][101] = { 0, };
 
 
 /*
@@ -53,16 +46,7 @@ d가 4일때 c가 -- , 0이면 d를 3로
 /* 이부분 문제 잘못읽어서 다시 짜야한다. 2마리 이상 있을 수 있다 인데 없다 로 봤다.*/
 void check_shark(vector <Shark> &shark_i) { // 10^6 이하로 짜볼 것
 	for (vector <Shark> ::iterator iter = shark_i.begin(); iter != shark_i.end();) {
-		check_board[(*iter).r][(*iter).c].cnt++;
-		check_board[(*iter).r][(*iter).c].x = (*iter).r;
-		check_board[(*iter).r][(*iter).c].y = (*iter).c;
-		check_board[(*iter).r][(*iter).c].z = (*iter).z;
-		if (check_board[(*iter).r][(*iter).c].cnt == 2) {
-			check_board[(*iter).r][(*iter).c] = (*iter).z;
-		}
-		else if(){
-
-		}
+		
 	}
 }
 
