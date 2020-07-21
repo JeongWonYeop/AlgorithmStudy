@@ -51,7 +51,7 @@ void bfs() {
 				int ny = qf.second + dy[i];
 				if (nx >= 0 && ny >= 0 && nx < N && ny < M) {
 					if(board[nx][ny] == 1 && check[nx][ny] == 0){
-						check[nx][ny] = cnt;
+						check[nx][ny] = check[qf.first][qf.second] + 1;//초 개념의 새로운 방법
 						que.push({ nx,ny });
 						if (nx == N - 1 && ny == M - 1) {
 							break;
