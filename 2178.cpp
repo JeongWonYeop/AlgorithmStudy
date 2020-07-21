@@ -6,7 +6,7 @@
 #include <functional>
 #include <utility>
 #include <functional>
-#include <string.h> 
+#include <string> 
 using namespace std;
 int board[100][100] = { 0, };
 int check[100][100] = { 0, };
@@ -73,8 +73,15 @@ void bfs() {
 int main() {
 	cin >> N >> M;
 	for (int i = 0; i < N; i++) {
+		std::string tempp;
+		cin >> tempp;
+
 		for(int j = 0; j < M;j++){
-			scanf_s("%1d", &board[i][j]);
+			if (tempp[j] == '0') {
+				board[i][j] = 0;
+			}
+			else if (tempp[j] == '1')
+				board[i][j] = 1;
 		}
 	}
 
@@ -82,5 +89,4 @@ int main() {
 	bfs();
 	cout << check[N-1][M-1];
 
-   system("pause");
 }
