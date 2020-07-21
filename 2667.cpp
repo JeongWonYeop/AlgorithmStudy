@@ -31,6 +31,7 @@ void DFS(int a, int b) {
 		if (nx >= 0 && ny >= 0 && nx < N && ny < N){
 			if (board[nx][ny] == 1 && checkk[nx][ny] != 1) {
 				DFS(nx, ny);
+				return;
 			}
 		}
 	}
@@ -73,7 +74,6 @@ int main() {
 		Pair q_f = que.front();
 		cout << q_f.first << " " << q_f.second << endl;
 		if (checkk[q_f.first][q_f.second] == 1) {
-			que.pop();
 			continue;
 		}
 		else {
@@ -85,6 +85,7 @@ int main() {
 
 
 		}
+
 		que.pop();
 	}
 
