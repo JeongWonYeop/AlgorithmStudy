@@ -59,8 +59,8 @@ void bfs() {
 				}
 			}
 			que.pop();
-			seeboard();
-			cout << endl;
+//			seeboard();
+//			cout << endl;
 		}
 
 	
@@ -73,14 +73,8 @@ void bfs() {
 int main() {
 	cin >> N >> M;
 	for (int i = 0; i < N; i++) {
-		int tempp;
-		cin >> tempp;
-		for(int j = M-1; j>=0;j--){
-			if (tempp % 10 == 0)
-				board[i][j] = 0;
-			else if(tempp % 10 == 1)
-				board[i][j] = 1;
-			tempp = tempp /10;
+		for(int j = 0; j < M;j++){
+			scanf_s("%1d", &board[i][j]);
 		}
 	}
 
@@ -88,5 +82,5 @@ int main() {
 	bfs();
 	cout << check[N-1][M-1];
 
-    system("pause");
+   system("pause");
 }
