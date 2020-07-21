@@ -74,6 +74,7 @@ int main() {
 		Pair q_f = que.front();
 		cout << q_f.first << " " << q_f.second << endl;
 		if (checkk[q_f.first][q_f.second] == 1) {
+			que.pop();
 			continue;
 		}
 		else {
@@ -85,7 +86,6 @@ int main() {
 
 
 		}
-
 		que.pop();
 	}
 
