@@ -15,7 +15,7 @@ queue <pair <int,int> > que;
 typedef pair<int, int> Pair;
 int dx[4] = {0,0,1,-1};
 int dy[4] = {-1,1,0,0};
-vector <int> result;
+priority_queue <int, vector<int>, greater<int>> resultque;
 int cnt = 0;
 /*
 00  01
@@ -71,7 +71,7 @@ int main() {
 
 	while (!que.empty()) {
 		Pair q_f = que.front();
-		cout << q_f.first << " " << q_f.second << endl;
+//		cout << q_f.first << " " << q_f.second << endl;
 		if (checkk[q_f.first][q_f.second] == 1) {
 			que.pop();
 			continue;
@@ -80,20 +80,22 @@ int main() {
 			totalcnt++;
 			cnt = 0;
 			DFS(q_f.first, q_f.second);
-			result.push_back(cnt);
-			cout << cnt << endl;
+			resultque.push(cnt);
+//			cout << cnt << endl;
 
 
 		}
 		que.pop();
 	}
 
+	// 문제 조건 중에 오름차순...
 
-
-	cout << totalcnt << "이거랑" << result.size() << "이거랑 같을 것으로 예상" << endl;
-	for (int i = 0; i < result.size(); i++) {
-		cout << result[i] << endl;
+	cout << resultque.size() << endl;
+	
+	
+	while(!resultque.empty()){
+		cout << resultque.top() << endl;
+		resultque.pop();
 	}
 
-	system("pause");
 }
