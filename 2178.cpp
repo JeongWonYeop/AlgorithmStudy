@@ -13,7 +13,6 @@ int check[100][100] = { 0, };
 int N, M;
 int dx[4] = {0,0,-1,1};
 int dy[4] = {-1,1,0,0};
-int cnt = 1;
 int finish = 0;
 /*
 00   01
@@ -37,14 +36,13 @@ void seeboard() {
 
 void pushque() {
 	que.push(make_pair(0, 0));
-	check[0][0] = cnt;
+	check[0][0] = 1;
 	//que.push({0,0});
 }
 
 
 void bfs() {
 		while(!que.empty()){
-			++cnt;
 			pair<int,int> qf = que.front();
 			for (int i = 0; i < 4; i++) {
 				int nx = qf.first + dx[i];
@@ -88,7 +86,7 @@ int main() {
 
 	pushque();
 	bfs();
-	cout << cnt;
+	cout << check[N-1][M-1];
 
     system("pause");
 }
