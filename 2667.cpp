@@ -31,7 +31,6 @@ void DFS(int a, int b) {
 		if (nx >= 0 && ny >= 0 && nx < N && ny < N){
 			if (board[nx][ny] == 1 && checkk[nx][ny] != 1) {
 				DFS(nx, ny);
-				return;
 			}
 		}
 	}
