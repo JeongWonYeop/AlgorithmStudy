@@ -27,7 +27,7 @@ void seeboard() {
 	for (int i = 0; i < N; i++) {
 
 		for (int j = 0; j < M; j++) {
-			cout << board[i][j] << " ";
+			cout << check[i][j] << " ";
 		}
 		cout << endl;
 
@@ -37,30 +37,23 @@ void seeboard() {
 
 void pushque() {
 	que.push(make_pair(0, 0));
-	check[0][0] = 1;
+	check[0][0] = cnt;
 	//que.push({0,0});
 }
 
 
 void bfs() {
-	while(finish == 0){
-		++cnt;
-		while(!que2.empty()){
-			que.push({ que2.front().first, que2.front().second });
-			que2.pop();
-		}
 		while(!que.empty()){
+			++cnt;
 			pair<int,int> qf = que.front();
 			for (int i = 0; i < 4; i++) {
 				int nx = qf.first + dx[i];
 				int ny = qf.second + dy[i];
 				if (nx >= 0 && ny >= 0 && nx < N && ny < M) {
-					if(board[nx][ny] == 1 && check[nx][ny] != 1){
-						board[nx][ny] = cnt;
-						check[nx][ny] = 1;
-						que2.push({ nx,ny });
+					if(board[nx][ny] == 1 && check[nx][ny] == 0){
+						check[nx][ny] = cnt;
+						que.push({ nx,ny });
 						if (nx == N - 1 && ny == M - 1) {
-							finish = 1;
 							break;
 						}
 					}
@@ -68,12 +61,13 @@ void bfs() {
 				}
 			}
 			que.pop();
+			seeboard();
+			cout << endl;
 		}
 
-		seeboard();
-		cout << endl;
+	
 
-	}
+	
 }
 
 
@@ -96,5 +90,5 @@ int main() {
 	bfs();
 	cout << cnt;
 
-	system("pause");
+    system("pause");
 }
