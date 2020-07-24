@@ -18,8 +18,9 @@ struct compare0 {
 	bool operator()(B_I &a, B_I &c) {
 		if (a.xx != c.xx)
 			return a.xx > c.xx;
-		return a.yy > c.yy;
-
+		if(a.yy!=c.yy)
+			return a.yy > c.yy;
+		return a.sizee > c.sizee;
 	}
 
 };
@@ -30,9 +31,9 @@ void enter() {
 	cin >> N;
 	for (int i = 0; i < N; i++) {
 
-		int xx, int yy;
-		cin >> xx >> yy;
-		B_I foradd = { xx,yy };
+		int xxx,  yyy,zzz;
+		cin >> xxx >> yyy>>zzz;
+		B_I foradd = { xxx,yyy,zzz};
 		que0.push(foradd);
 
 	}
@@ -40,7 +41,7 @@ void enter() {
 
 void quesee() {
 	while (!que0.empty()) {
-		cout << que0.top().xx << " " << que0.top().yy << " " << endl;
+		cout << que0.top().xx << " " << que0.top().yy << " " <<que0.top().sizee<< endl;
 
 		que0.pop();
 	}
