@@ -71,7 +71,57 @@ priority_queue <B_I, vector <B_I>, compare2> que2; //위행기준
 priority_queue <B_I, vector <B_I>, compare3> que3; //아래행기준
 
 void tilt(int orient) {
-	
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			board[i][j] = 0;
+		}
+	}
+	if (orient == 0) {
+		while(!que0.empty()){
+			B_I first = que0.top();
+			que0.pop();
+			int ny = first.yy ;
+			while (board[first.xx][--ny] == 0 && ny !=-1) {}
+			board[first.xx][++ny] = first.sizee;
+		}
+	}
+	else if (orient == 1) {
+		while (!que1.empty()) {
+			B_I first = que1.top();
+			que1.pop();
+			int ny = first.yy;
+			while (board[first.xx][++ny] == 0 && ny != N) {}
+			board[first.xx][--ny] = first.sizee;
+		}
+	}
+	else if (orient == 2) {
+		while (!que2.empty()) {
+			B_I first = que2.top();
+			que2.pop();
+			int nx = first.xx;
+			while (board[--nx][first.yy] == 0 && nx != -1) {}
+			board[++nx][first.yy] = first.sizee;
+		}
+	}
+	else {
+		while (!que3.empty()) {
+			B_I first = que3.top();
+			que3.pop();
+			int nx = first.xx;
+			while (board[++nx][first.yy] == N && nx != -1) {}
+			board[--nx][first.yy] = first.sizee;
+		}
+	}
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			que0.push({ i,j,board[i][j] });
+			que1.push({ i,j,board[i][j] });
+			que2.push({ i,j,board[i][j] });
+			que3.push({ i,j,board[i][j] });
+		}
+	}
+
 }
 
 void enter() {
@@ -125,10 +175,15 @@ void quesee() {
 }
 int main() {
 	/*
+	7.25
+		- 기울이는 기능 ,합치는 기능 필요할 것이다.
+			- 합치는 기능은 먼저 조건검사를 통해서 해당 블록의 블록이 합쳐진 적이 있는지를 먼저 검사한다.
+		- 뭘만들어야할지랑, 시간복잡도만 고려한다.
+
 	7.24
 		·기울이는 기능 ,합치는 기능 필요할 것이다.
 			- 합치는 기능은 먼저 조건검사를 통해서 해당 블록의 블록이 합쳐진 적이 있는지를 먼저 검사한다.
-			
+	
 	7.23
 	자료구조 : 모든 블록의 위치가 담겨있는 큐.
 		큐의 데이터 타입은 구조체로 {int x,int y, int number}.
@@ -155,7 +210,11 @@ int main() {
 
 
 	enter();
-	quesee();
+//	quesee();
 //	tilt(0); // 0:좌,1:우,2:위,3:아래
+	tilt(1);
+//	tilt(2);
+//	tilt(3);
+	see();
 	system("pause");
 }
