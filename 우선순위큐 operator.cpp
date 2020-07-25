@@ -17,11 +17,11 @@ typedef struct board_info {
 
 struct compare0 {
 	bool operator()(B_I &a, B_I &c) {
-		if (a.xx != c.xx)
-			return a.xx > c.xx;
-		if(a.yy!=c.yy)
+		if (a.yy != c.yy)
 			return a.yy > c.yy;
-		return a.sizee > c.sizee;
+		if (a.xx != c.xx)
+			return a.xx > c.xx; 
+		return a.sizee > c.sizee; 
 	}
 
 };
