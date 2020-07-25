@@ -46,20 +46,20 @@ struct compare1 { //우측열 기준
 
 struct compare2 {//가장 윗행 기준
 	bool operator()(B_I &a, B_I &c) {
-		if (a.xx != c.xx)
-			return a.xx > c.xx;
 		if (a.yy != c.yy)
 			return a.yy > c.yy;
+		if (a.xx != c.xx)
+			return a.xx > c.xx;
 		return a.sizee > c.sizee;
 	}
 };
 
 struct compare3 { // 가장 아래행 기준
 	bool operator()(B_I &a, B_I &c) {
-		if (a.xx != c.xx)
-			return a.xx < c.xx;
 		if (a.yy != c.yy)
 			return a.yy > c.yy;
+		if (a.xx != c.xx)
+			return a.xx < c.xx;
 		return a.sizee > c.sizee;
 	}
 };
@@ -107,37 +107,86 @@ void mix(int orient) {
 		while (!que1.empty()) {
 			B_I first = que1.top();
 			que1.pop();
-			int ny = first.yy;
-			while (board[first.xx][++ny] == 0 && ny != N) {}
-			board[first.xx][--ny] = first.sizee;
+			B_I second = que1.top();
+			que1.pop();
+
+			board[first.xx][first.yy] = first.sizee;
+			board[second.xx][second.yy] = second.sizee;
+
+
+			if (first.xx != second.xx) {
+				que1.push({ second.xx,second.yy,second.sizee });
+				continue;
+			}
+			int nx = first.xx;
+			int nsize = first.sizee;
+			if (board[nx][first.yy] == board[nx][second.yy]) {
+				board[nx][first.yy] = nsize * 2;
+				board[second.xx][second.yy] = 0;
+			}
 		}
 	}
 	else if (orient == 2) {
 		while (!que2.empty()) {
 			B_I first = que2.top();
 			que2.pop();
-			int nx = first.xx;
-			while (board[--nx][first.yy] == 0 && nx != -1) {}
-			board[++nx][first.yy] = first.sizee;
+			B_I second = que2.top();
+			que2.pop();
+
+			board[first.xx][first.yy] = first.sizee;
+			board[second.xx][second.yy] = second.sizee;
+
+
+			if (first.yy != second.yy) {
+				que2.push({ second.xx,second.yy,second.sizee });
+				continue;
+			}
+			int samey = first.yy;
+			int nsize = first.sizee;
+			if (board[first.xx][samey] == board[second.xx][samey]) {
+				board[first.xx][samey] = nsize * 2;
+				board[second.xx][samey] = 0;
+			}
 		}
 	}
 	else {
-		while (!que3.empty()) {
+		while (que3.size() >= 2) {
+			cout << que3.size() << endl;
 			B_I first = que3.top();
 			que3.pop();
-			int nx = first.xx;
-			while (board[++nx][first.yy] == N && nx != -1) {}
-			board[--nx][first.yy] = first.sizee;
+			B_I second = que3.top();
+			que3.pop();
+
+			board[first.xx][first.yy] = first.sizee;
+			board[second.xx][second.yy] = second.sizee;
+
+			cout << first.yy <<" " <<second.yy<<endl;
+			if (first.yy != second.yy) {
+				que3.push({ second.xx,second.yy,second.sizee });
+				continue;
+			}
+			cout << "ㄱㄱ" << endl;
+			int samey = first.yy;
+			int nsize = first.sizee;
+			if (board[first.xx][samey] == board[second.xx][samey]) {
+				board[first.xx][samey] = nsize * 2;
+				board[second.xx][samey] = 0;
+			}
 		}
 	}
 
 
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
-			que0.push({ i,j,board[i][j] });
-			que1.push({ i,j,board[i][j] });
-			que2.push({ i,j,board[i][j] });
-			que3.push({ i,j,board[i][j] });
+			if (orient == 0) {
+				que0.push({ i,j,board[i][j] });
+			}
+			else if (orient == 1)
+				que1.push({ i,j,board[i][j] });
+			else if (orient == 2)
+				que2.push({ i,j,board[i][j] });
+			else 
+				que3.push({ i,j,board[i][j] });
 		}
 	}
 
@@ -182,17 +231,22 @@ void tilt(int orient) {
 			B_I first = que3.top();
 			que3.pop();
 			int nx = first.xx;
-			while (board[++nx][first.yy] == N && nx != -1) {}
+			while (board[++nx][first.yy] == 0 && nx != N) {}
 			board[--nx][first.yy] = first.sizee;
 		}
 	}
 
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
-			que0.push({ i,j,board[i][j] });
-			que1.push({ i,j,board[i][j] });
-			que2.push({ i,j,board[i][j] });
-			que3.push({ i,j,board[i][j] });
+			if (orient == 0) {
+				que0.push({ i,j,board[i][j] });
+			}
+			else if (orient == 1)
+				que1.push({ i,j,board[i][j] });
+			else if (orient == 2)
+				que2.push({ i,j,board[i][j] });
+			else
+				que3.push({ i,j,board[i][j] });
 		}
 	}
 
@@ -287,9 +341,8 @@ int main() {
 	enter();
 //	quesee();
 //	tilt(0); // 0:좌,1:우,2:위,3:아래
-	tilt(0);
-	mix(0);
-	tilt(0);
+	tilt(3);
+	mix(3);
 //	tilt(2);
 //	tilt(3);
 	see();
