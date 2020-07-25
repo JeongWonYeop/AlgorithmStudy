@@ -13,7 +13,9 @@ typedef struct board_info {
 	int yy;
 	int sizee;
 }B_I;
+
 priority_queue <B_I, vector <B_I>, compare0> que0;
+
 struct compare0 {
 	bool operator()(B_I &a, B_I &c) {
 		if (a.xx != c.xx)
@@ -29,12 +31,10 @@ struct compare0 {
 void enter() {
 	cin >> N;
 	for (int i = 0; i < N; i++) {
-
-		int xxx,  yyy,zzz;
-		cin >> xxx >> yyy>>zzz;
-		B_I foradd = { xxx,yyy,zzz};
-		que0.push(foradd);
-
+		for (int j = 0; j < N; j++) {
+			cin >> board[i][j];
+			que0.push({ i,j,board[i][j] });
+		}
 	}
 }
 
