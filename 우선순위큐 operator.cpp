@@ -14,7 +14,6 @@ typedef struct board_info {
 	int sizee;
 }B_I;
 
-priority_queue <B_I, vector <B_I>, compare0> que0;
 
 struct compare0 {
 	bool operator()(B_I &a, B_I &c) {
@@ -26,6 +25,7 @@ struct compare0 {
 	}
 
 };
+priority_queue <B_I, vector <B_I>, compare0> que0;
 
 
 void enter() {
