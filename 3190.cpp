@@ -73,6 +73,7 @@ void snake_move() {
 		check[nx][ny] = 1;
 		snake = make_pair(nx, ny);
 		if (apple[nx][ny] == 1) {
+			apple[nx][ny] = 0; //사과 먹고나면 없어져야한다!
 			/*
 			for (int i = 1; i <= N; i++) {
 				for (int j = 1; j <= N; j++) {
