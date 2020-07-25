@@ -13,6 +13,7 @@ int board[20][20];
 //priority_queue <B_I, vector <B_I>, compare3> que3;
 int dx[4] = { 0,0,-1,1 }; //좌우위아래
 int dy[4] = { -1,1,0,0 };
+int check[20][20] = { 0, };
 typedef struct board_info {
 	int xx;
 	int yy;
@@ -69,7 +70,80 @@ priority_queue <B_I, vector <B_I>, compare0> que0; //좌측열기준
 priority_queue <B_I, vector <B_I>, compare1> que1; //우측열기준
 priority_queue <B_I, vector <B_I>, compare2> que2; //위행기준
 priority_queue <B_I, vector <B_I>, compare3> que3; //아래행기준
+void mix(int orient) {
 
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			board[i][j] = 0;
+			check[i][j] = 0;
+		}
+	}
+
+	if (orient == 0) {
+		while (!que0.empty()) {
+			B_I first = que0.top();
+			que0.pop();
+			B_I second = que0.top();
+			que0.pop();
+
+			board[first.xx][first.yy] = first.sizee;
+			board[second.xx][second.yy] = second.sizee;
+
+
+			if (first.xx != second.xx) {
+				que0.push({ second.xx,second.yy,second.sizee });
+				continue;
+			}
+			int nx = first.xx;
+			int nsize = first.sizee;
+			if (board[nx][first.yy] == board[nx][second.yy]) {
+				board[nx][first.yy] =nsize*2;
+				board[second.xx][second.yy] = 0;
+			}
+		}
+	}
+	else if (orient == 1) {
+		while (!que1.empty()) {
+			B_I first = que1.top();
+			que1.pop();
+			int ny = first.yy;
+			while (board[first.xx][++ny] == 0 && ny != N) {}
+			board[first.xx][--ny] = first.sizee;
+		}
+	}
+	else if (orient == 2) {
+		while (!que2.empty()) {
+			B_I first = que2.top();
+			que2.pop();
+			int nx = first.xx;
+			while (board[--nx][first.yy] == 0 && nx != -1) {}
+			board[++nx][first.yy] = first.sizee;
+		}
+	}
+	else {
+		while (!que3.empty()) {
+			B_I first = que3.top();
+			que3.pop();
+			int nx = first.xx;
+			while (board[++nx][first.yy] == N && nx != -1) {}
+			board[--nx][first.yy] = first.sizee;
+		}
+	}
+
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			que0.push({ i,j,board[i][j] });
+			que1.push({ i,j,board[i][j] });
+			que2.push({ i,j,board[i][j] });
+			que3.push({ i,j,board[i][j] });
+		}
+	}
+
+
+
+}
 void tilt(int orient) {
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
@@ -121,6 +195,7 @@ void tilt(int orient) {
 			que3.push({ i,j,board[i][j] });
 		}
 	}
+
 
 }
 
@@ -212,7 +287,9 @@ int main() {
 	enter();
 //	quesee();
 //	tilt(0); // 0:좌,1:우,2:위,3:아래
-	tilt(1);
+	tilt(0);
+	mix(0);
+	tilt(0);
 //	tilt(2);
 //	tilt(3);
 	see();
