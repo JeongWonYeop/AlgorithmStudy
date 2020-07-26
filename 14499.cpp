@@ -48,7 +48,6 @@ void enter() {
 	}
 	square = make_pair(r, c);
 	squareinfo[3] = map[square.first][square.second];
-	cout << square.first << " " << square.second << " " << map[square.first][square.second];
 	map[square.first][square.second] = 0;
 	for (int i = 0; i < K; i++) {//10^3
 		int orient_num;
@@ -60,7 +59,11 @@ void enter() {
 void play(int orient) {
 	r = r + dx[orient];
 	c = c + dy[orient];
-	if (r<0 || c<0 || r>N - 1 || c>M - 1) return;
+	if (r<0 || c<0 || r>N - 1 || c>M - 1) {
+		r = r - dx[orient];
+		c = c - dy[orient];
+		return;
+	}
 	/*
 	1:µ¿
 	2:¼­
@@ -133,7 +136,7 @@ void play(int orient) {
 
 
 	//for debug
-	debug();
+//	debug();
 
 	cout << squareinfo[1] << endl;
 
