@@ -86,30 +86,36 @@ void play(int orient) {
 	위쪽 : 3:5 2:2 1:6 4:4 5:1 6:3
 	아래쪽 : 3:6 2:2 1:5 4:4 5:3 6:1
 	*/
-	if (orient == 1) {
 
-		squareinfo[3] = squareinfo[2];
-		squareinfo[2] = squareinfo[1];
-		squareinfo[1] = squareinfo[4];
-		squareinfo[4] = squareinfo[3];
+	for (int i = 0; i < 7; i++) {
+		temp[i] = squareinfo[i];
+	}
+
+	
+	if (orient == 1) {
+		
+		squareinfo[3] = temp[2];
+		squareinfo[2] = temp[1];
+		squareinfo[1] = temp[4];
+		squareinfo[4] = temp[3];
 	}
 	else if (orient == 2) {
-		squareinfo[3] = squareinfo[4];
-		squareinfo[2] = squareinfo[3];
-		squareinfo[1] = squareinfo[2];
-		squareinfo[4] = squareinfo[1];
+		squareinfo[3] = temp[4];
+		squareinfo[2] = temp[3];
+		squareinfo[1] = temp[2];
+		squareinfo[4] = temp[1];
 	}
 	else if (orient == 3) {
-		squareinfo[3] = squareinfo[5];
-		squareinfo[1] = squareinfo[6];
-		squareinfo[5] = squareinfo[1];
-		squareinfo[6] = squareinfo[3];
+		squareinfo[3] = temp[5];
+		squareinfo[1] = temp[6];
+		squareinfo[5] = temp[1];
+		squareinfo[6] = temp[3];
 	}
 	else {
-		squareinfo[3] = squareinfo[6];
-		squareinfo[1] = squareinfo[5];
-		squareinfo[5] = squareinfo[3];
-		squareinfo[6] = squareinfo[1];
+		squareinfo[3] = temp[6];
+		squareinfo[1] = temp[5];
+		squareinfo[5] = temp[3];
+		squareinfo[6] = temp[1];
 	}
 
 
