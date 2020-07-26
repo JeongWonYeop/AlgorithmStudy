@@ -118,16 +118,16 @@ void play(int orient) {
 		squareinfo[6] = temp[1];
 	}
 
-
-	
-	if (squareinfo[3] == 0) {
-		squareinfo[3] = map[r][c];
-		map[r][c] = 0;
+	/*
+	이동한 칸에 쓰여 있는 수가 0이면, 주사위의 바닥면에 쓰여 있는 수가 칸에 복사된다. 
+	0이 아닌 경우에는 칸에 쓰여 있는 수가 주사위의 바닥면으로 복사되며, 칸에 쓰여 있는 수는 0이 된다.
+	*/
+	if (map[r][c] == 0) {
+		map[r][c] = squareinfo[3];
 	}
 	else {
-		if (map[r][c] == 0) {
-			map[r][c] = squareinfo[3];
-		}
+		squareinfo[3] = map[r][c];
+		map[r][c] = 0;
 	}
 
 
