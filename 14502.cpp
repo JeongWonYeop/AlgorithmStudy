@@ -27,7 +27,9 @@ queue <PairInt> que;
 */
 
 void setting() {
-
+	/*
+		바로 백트래킹이로구나.
+	*/
 }
 
 
