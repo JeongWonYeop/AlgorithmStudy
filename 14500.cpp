@@ -3,68 +3,67 @@
 #include <stdlib.h>
 #include <vector>
 #include <queue>
-#include <functional>
 #include <utility>
+#include <functional>
 using namespace std;
-
-
+int N, M;
+int board[500][500] = { 0, };
+int checked[500][500] = { 0. };
+int ans = 0;
+/*우 좌 위 아래*/
+int dx[4] = {0,0,-1,1};
+int dy[4] = {1,-1,0,0};
 /*
-각 모양별로, 가장 높은 합의 값 알아내고,
-그 중에서 가장 높은 값을 답으로 제출.
-10^8 * 2  -- > 1억짜리 이중포문 두개까지는 허용하겠다.
-
-2500
-10^3 * 10^5 넉넉하다.
-
-왼쪽 위를 기준으로 하기로 약속.
-길쭉한 형태는 
+00 01
+10 11
 */
-
-//ㅁㅁㅁㅁ
-void tet1(int x, int y) {
-	
+int max(int a,int b) {
+	if (a > b) {
+		return a;
+	}
+	else return b;
 }
-/*
-ㅁ
-ㅁ
-ㅁ
-ㅁ
-*/
-void tet1(int x, int y) {
 
+int tetromino(int x, int y, int cnt) {
+	if (cnt == 5) {
+		return 0;
+	}
+	for (int i = 0; i < 4; i++) {
+		int nx = x + dx[i];
+		int ny = y + dy[i];
+		if (nx >= 0 && nx < N&&ny >= 0 && ny < M&&checked[nx][ny] ==0) {
+			checked[nx][ny] = 1;
+			ans = max(ans,board[x][y]+tetromino(nx, ny, cnt + 1));
+			// 빠져나오기전(cnt==5)까지는 아래의 return은 닿을 일 없다.
+			checked[nx][ny] = 0;
+		}
+	}
+	return ans;
 }
-//ㅁㅁㅁ
-//ㅁ        2개
-void tet2(int x,int y) {
 
-}
-//ㅁㅁ
-//ㅁ
-//ㅁ
-void tet2(int x, int y) {
-
-}
-//ㅁㅁ
-//ㅁㅁ
-void tet3(int x, int y) {
-
-}
-//ㅁㅁ
-//  ㅁㅁ
-void tet4(int x, int y) {
-
-
-}
-//ㅁ
-//ㅁㅁ
-//  ㅁ
-void tet2(int x, int y) {
+void other_shape(int x,int y) {
 
 }
 
 
+void enter() {
+	cin >> N >> M;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			cin >> board[i][j];
+		}
+	}
+}
 
 
 int main() {
-
+	enter();
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			checked[i][j] = 1;
+			tetromino(i, j, 1);
+			checked[i][j] = 0;
+			other_shape(i, j);
+		}
+	}
 }
