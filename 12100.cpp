@@ -110,7 +110,8 @@ int maxinFive(int cnt,int arr[][20]) {
 	//초기상태
 	//00000부터
 	//33333까지
-
+	arr[0][0] = 999;
+	return 0;
 }
 
 int main() {
@@ -119,6 +120,7 @@ int main() {
 		
 	maxinFive(1, board);
 	
+	cout << board[0][0];
 	//보드 초기화
 
 	
