@@ -8,10 +8,11 @@
 using namespace std;
 int N;
 int board[20][20] = { 0, };
+int copy_board[20][20][6] = { 0, };
 int checked[20][20] = { 0, };
 int dx[4] = {0,0,-1,1};
 int dy[4] = {-1,1,0,0};
-
+int ans = -987654321;
 /*
 00 01
 10 11
@@ -58,17 +59,18 @@ void moveblock(int x,int y,int orient) {
 	}
 }
 
-void tilt(int orient) {
+void tilt(int orient,int cnt) {
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
 			checked[i][j] = 0;
+			copy_board[i][j][cnt] = board[i][j];
 		}
 	}
 	if (orient == 0) {
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
 				if (board[j][i] == 0) continue;
-				else moveblock(j,i, orient);
+				else moveblock(j, i, orient);
 			}
 		}
 	}
@@ -103,26 +105,59 @@ void enter() {
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
 			cin >> board[i][j];
+
 		}
 	}
 }
-int maxinFive(int cnt,int arr[][20]) {
-	//초기상태
-	//00000부터
-	//33333까지
-	arr[0][0] = 999;
-	return 0;
+int sum() {
+	int a = 0;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			a = max(a, board[i][j]);
+			cout << board[i][j]<<" ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+	return a;
+}
+void maxinFive(int cnt) {
+	if (cnt == 6) {
+		ans = sum();
+		return;
+	}
+	
+	for (int i = 0; i < 4; i++) {
+		cout << "cnt : " << cnt << " i :";
+		if (i == 0) {
+			cout << "left" << endl;
+		}
+		else if (i == 1) {
+			cout << "Right" << endl;
+		}
+		else if (i == 2) {
+			cout << "up" << endl;
+		}
+		else cout << "down" << endl;
+
+		tilt(i,cnt);
+		maxinFive(cnt + 1); // for문이고 뭐고 모두 얼음. 다시돌아올때까지.
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				board[i][j] = copy_board[i][j][cnt];
+			}
+		}
+
+	}
+
 }
 
 int main() {
-	int ans = 0;
+
 	enter();
 		
-	maxinFive(1, board);
-	
-	cout << board[0][0];
-	//보드 초기화
+	maxinFive(1);
+	cout << ans ;
 
-	
 	system("pause");
 }
