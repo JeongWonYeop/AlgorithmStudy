@@ -109,25 +109,24 @@ void enter() {
 		}
 	}
 }
-int sum() {
-	int a = 0;
+void sum() {
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
-			a = max(a, board[i][j]);
-			cout << board[i][j]<<" ";
+			ans= max(ans, board[i][j]);
+//			cout << board[i][j]<<" ";
 		}
-		cout << endl;
+//		cout << endl;
 	}
-	cout << endl;
-	return a;
+//	cout << endl;
 }
 void maxinFive(int cnt) {
 	if (cnt == 6) {
-		ans = sum();
+		sum();
 		return;
 	}
 	
 	for (int i = 0; i < 4; i++) {
+		/*
 		cout << "cnt : " << cnt << " i :";
 		if (i == 0) {
 			cout << "left" << endl;
@@ -139,7 +138,7 @@ void maxinFive(int cnt) {
 			cout << "up" << endl;
 		}
 		else cout << "down" << endl;
-
+		*/
 		tilt(i,cnt);
 		maxinFive(cnt + 1); // for문이고 뭐고 모두 얼음. 다시돌아올때까지.
 		for (int i = 0; i < N; i++) {
