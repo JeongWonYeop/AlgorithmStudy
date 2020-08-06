@@ -11,6 +11,7 @@ int board[20][20] = { 0, };
 int checked[20][20] = { 0, };
 int dx[4] = {0,0,-1,1};
 int dy[4] = {-1,1,0,0};
+
 /*
 00 01
 10 11
@@ -29,6 +30,10 @@ int dy[4] = {-1,1,0,0};
 	0 1 2 3
 */
 
+int max(int a, int b) {
+	if (a > b) return a;
+	else return b;
+}
 void moveblock(int x,int y,int orient) {
 
 	int nx = x + dx[orient];
@@ -101,20 +106,21 @@ void enter() {
 		}
 	}
 }
+int maxinFive(int cnt,int arr[][20]) {
+	//초기상태
+	//00000부터
+	//33333까지
 
+}
 
 int main() {
+	int ans = 0;
 	enter();
-	int a = 0;
-	while(a != -1){
-		cin >> a;
-		tilt(a);
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				cout << board[i][j];
-			}
-			cout << endl;
-		}
-	}
+		
+	maxinFive(1, board);
+	
+	//보드 초기화
+
+	
 	system("pause");
 }
