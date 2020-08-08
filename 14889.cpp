@@ -59,9 +59,9 @@ void combination(int n) {
 
 	//순열
 	do {
-		// 출력ss
-		//vector <int> a(2, 0);
-		//vector은 선언자체가 초기화 포함된 것. 2칸만큼 초기화한답시고
+		// 출력
+		vector <int> a(2, 0);
+		//vector은 선언자체가 초기화 포함된 것. 2칸만큼 초기화한답시고 이렇게 하면 앞에 2칸이 0으로 채워지고 그다음부터 푸쉬됨.
 		for (int i = 0; i<ind.size(); i++) {
 			if (ind[i] == 1) {
 				a.push_back(i);
