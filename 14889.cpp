@@ -15,6 +15,7 @@ int N;
 int ans = 987654321;
 int sum_f_team = 0;
 int sum_s_team = 0;
+vector <int> a;
 /*
 	해당 행 열 중 한번씩 사용한 행,열은 중복해서 사용불가함.
 	S01+S10 - S21+S12 이건 안된다는말. 1이 지금 중복으로 사용됐으니까.
@@ -30,7 +31,7 @@ int abs(int a) {
 }
 void enter() {
 	cin >> N;
-	for (int i = 0; i < N; i++) {
+	for (int i = 0; i < N; i++) {//O(400)
 		for (int j = 0; j < N; j++) {
 			cin >> board[i][j];
 		}
@@ -60,19 +61,17 @@ void combination(int n) {
 	//순열
 	do {
 		// 출력
-		vector <int> a;
-		//vector은 선언자체가 초기화 포함된 것. 2칸만큼 초기화한답시고 이렇게 하면 앞에 2칸이 0으로 채워지고 그다음부터 푸쉬됨.
+		a.clear();
 		for (int i = 0; i<ind.size(); i++) {
 			if (ind[i] == 1) {
 				a.push_back(i);
-				cout << i << endl;
 			}
 		}
-		cout << "a[0] : " <<a[0] <<"a[1] :  "<< a[1] << endl;
+//		cout << "a[0] : " <<a[0] <<"a[1] :  "<< a[1] << endl;
 
 		sum_f_team = sum_f_team + board[f_team[a[0]]][f_team[a[1]]] + board[f_team[a[1]]][f_team[a[0]]];
 		sum_s_team = sum_s_team + board[s_team[a[0]]][s_team[a[1]]] + board[s_team[a[1]]][s_team[a[0]]];
-		cout << "첫번째팀: "<<sum_f_team <<" 두번째팀: " <<sum_s_team << endl;
+//		cout << "첫번째팀: "<<sum_f_team <<" 두번째팀: " <<sum_s_team << endl;
 
 	} while (next_permutation(ind.begin(), ind.end()));
 }
@@ -84,11 +83,11 @@ void dfs(int cnt) {
 		for (int i = 0; i < N; i++) {
 			if (checked[i] == 0) {
 				f_team.push_back(i);
-				cout << "f_team에 들어갑니다 값 : " << i << endl;
+//				cout << "f_team에 들어갑니다 값 : " << i << endl;
 			}
 			else {
 				s_team.push_back(i);
-				cout << "s_team에 들어갑니다 값 : " << i << endl;
+//				cout << "s_team에 들어갑니다 값 : " << i << endl;
 			}
 		}
 		sum_f_team = 0;
