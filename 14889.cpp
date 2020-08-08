@@ -59,7 +59,7 @@ void combination(int n) {
 
 	//순열
 	do {
-		// 출력
+		// 출력ss
 		//vector <int> a(2, 0);
 		//vector은 선언자체가 초기화 포함된 것. 2칸만큼 초기화한답시고
 		for (int i = 0; i<ind.size(); i++) {
