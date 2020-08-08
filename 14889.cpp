@@ -5,6 +5,7 @@
 #include <queue>
 #include <utility>
 #include <functional>
+#include <string.h>
 using namespace std;
 int board[20][20] = { 0, };
 int checked[20] = { 0, };
@@ -37,7 +38,6 @@ void enter() {
 		}
 	}
 }
-
 void combination(int n) {
 	// 0과1을 저장 할 벡터 생성
 	vector<int> ind;
@@ -76,42 +76,54 @@ void combination(int n) {
 	} while (next_permutation(ind.begin(), ind.end()));
 }
 
-void dfs(int cnt) {
-	f_team.clear();
-	s_team.clear();
-	if (cnt == N/2) {
+void start() {
+
+	vector<int> ind;
+	int k = N / 2;
+	for (int i = 0; i < k; i++) {
+		ind.push_back(1);
+	}
+	for (int i = 0; i < N - k; i++) {
+		ind.push_back(0);
+	}
+	sort(ind.begin(), ind.end());
+
+	do {
+		memset(checked, 0, sizeof(checked));
+		for (int i = 0; i<ind.size(); i++) {
+			if (ind[i] == 1) {
+				checked[i] = 1;
+			}
+		}
+
+		f_team.clear();
+		s_team.clear();
+
 		for (int i = 0; i < N; i++) {
 			if (checked[i] == 0) {
 				f_team.push_back(i);
-//				cout << "f_team에 들어갑니다 값 : " << i << endl;
+				//				cout << "f_team에 들어갑니다 값 : " << i << endl;
 			}
 			else {
 				s_team.push_back(i);
-//				cout << "s_team에 들어갑니다 값 : " << i << endl;
+				//				cout << "s_team에 들어갑니다 값 : " << i << endl;
 			}
 		}
 		sum_f_team = 0;
 		sum_s_team = 0;
-		combination(N/2);
+		combination(N / 2);
 		ans = min(ans, abs(sum_f_team - sum_s_team));
-		return;
-	}
 
-	for (int i = 0; i < N; i++) {
-		if (checked[i] == 1) continue;
-		checked[i] = 1;
-		NUM[cnt] = i;
-		cout <<"NUM["<<cnt<<"] 값은 :"<< i << endl;
-		dfs(cnt + 1);
-		checked[i] = 0;
- 	}
+	} while (next_permutation(ind.begin(),ind.end()));
+
+
 
 }
 
 
 int main() {
 	enter();
-	dfs(0);
+	start();
 	cout << ans;
 	system("pause");
 }
