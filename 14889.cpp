@@ -65,20 +65,22 @@ void combination(int n) {
 		for (int i = 0; i<ind.size(); i++) {
 			if (ind[i] == 1) {
 				a.push_back(i);
+				cout << i << endl;
 			}
 		}
 		cout << "a[0] : " <<a[0] <<"a[1] :  "<< a[1] << endl;
-//		sum_f_team = sum_f_team + board[f_team[f]][f_team[s]] + board[f_team[s]][f_team[f]];
-//		sum_s_team = sum_s_team + board[s_team[f]][s_team[s]] + board[s_team[s]][s_team[f]];
+
+		sum_f_team = sum_f_team + board[f_team[a[0]]][f_team[a[1]]] + board[f_team[a[1]]][f_team[a[0]]];
+		sum_s_team = sum_s_team + board[s_team[a[0]]][s_team[a[1]]] + board[s_team[a[1]]][s_team[a[0]]];
 		cout << "Ã¹¹øÂ°ÆÀ: "<<sum_f_team <<" µÎ¹øÂ°ÆÀ: " <<sum_s_team << endl;
 
 	} while (next_permutation(ind.begin(), ind.end()));
 }
 
 void dfs(int cnt) {
+	f_team.clear();
+	s_team.clear();
 	if (cnt == N/2) {
-		vector<int> f_team(N / 2, 0);
-		vector<int> s_team(N / 2, 0);
 		for (int i = 0; i < N; i++) {
 			if (checked[i] == 0) {
 				f_team.push_back(i);
