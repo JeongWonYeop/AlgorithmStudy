@@ -89,7 +89,7 @@ void turn(int first, int next,int pm ,int orient) {
 		if (arr[first][6] != arr[next][2]) {
 			cout << first + 1 << "번쨰와 " << next + 1 << "번쨰가 다르므로 진행" << endl;
 			t_turn(next, reverse(orient));
-			int n_next = next - 1;
+			int n_next = --next;
 			turn(next, n_next, 0, reverse(orient));
 		}
 		else return;
@@ -97,7 +97,7 @@ void turn(int first, int next,int pm ,int orient) {
 	else {
 		if (arr[first][2] != arr[next][6]) {
 			t_turn(next, reverse(orient));
-			int n_next = next + 1;
+			int n_next = ++next;
 			turn(next, n_next, 1,reverse(orient));
 		}
 		else return;
@@ -111,9 +111,9 @@ void start() {
 	for (; v_i != turn_info.end(); v_i++) {
 		int t_n = (*v_i).first;//톱니바퀴 숫자
 		t_turn(t_n, (*v_i).second);
-		int n_t_n = t_n -1 ;
+		int n_t_n = --t_n;
 		turn(t_n, n_t_n,0, (*v_i).second);
-		n_t_n = t_n + 1;
+		n_t_n = ++t_n;
 		turn(t_n, n_t_n,1, (*v_i).second);
 	}
 }
