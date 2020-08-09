@@ -13,7 +13,7 @@ int dy[4] = {-1,1,0,0};
 int N, M;
 int board[8][8];
 int checked[8][8];
-
+int copy_checked[8][8];
 
 int ans = 987654321;
 
@@ -94,7 +94,7 @@ void DFS(vector <Info>::iterator iter, int depth) {
 	y = (*iter).y;
 	cctv_num = (*iter).v;
 //	cout << "CCTV¹øÈ£ : "<<(*iter).v << endl;
-	int copy_checked[8][8];
+
 	memcpy(copy_checked, checked, sizeof(checked));
 	switch (cctv_num) {
 	case 1:
