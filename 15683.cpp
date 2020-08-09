@@ -6,6 +6,7 @@
 #include <queue>
 #include <functional>
 #include <utility>
+#include <cstring>
 using namespace std;
 int dx[4] = {0,0,-1,1};
 int dy[4] = {-1,1,0,0};
@@ -84,7 +85,7 @@ void debug() {
 }
 void DFS(vector <Info>::iterator iter, int depth) {
 	if (iter == vec_cctv.end()) {
-		debug();
+//		debug();
 		ex_cctv();
 		return;
 	}
@@ -92,8 +93,8 @@ void DFS(vector <Info>::iterator iter, int depth) {
 	x = (*iter).x;
 	y = (*iter).y;
 	cctv_num = (*iter).v;
-	cout << "CCTV번호 : "<<(*iter).v << endl;
-	int copy_checked[8][8][10];
+//	cout << "CCTV번호 : "<<(*iter).v << endl;
+	int copy_checked[8][8];
 	memcpy(copy_checked, checked, sizeof(checked));
 	switch (cctv_num) {
 	case 1:
@@ -101,7 +102,7 @@ void DFS(vector <Info>::iterator iter, int depth) {
 			vector <Info>::iterator temp_iter = iter;
 			detect(x, y, i);
 			DFS(++temp_iter,depth+1);
-			memcpy(checked, copy_checked[depth], sizeof(copy_checked));
+			memcpy(checked, copy_checked, sizeof(copy_checked));
 		}
 		break;
 	case 2:
@@ -117,14 +118,13 @@ void DFS(vector <Info>::iterator iter, int depth) {
 				detect(x, y, 3);
 			}
 			DFS(++temp_iter,depth+1);
-			memcpy(checked, copy_checked[depth], sizeof(copy_checked));
+			memcpy(checked, copy_checked, sizeof(copy_checked));
 		}
 		break;
 	case 3:
 		//0:좌 1:우 2:위 3:아래
 
 		for (int i = 0; i < 4; i++) {
-			memcpy(copy_checked[depth], checked, sizeof(checked));
 			vector <Info>::iterator temp_iter = iter;
 			if (i == 0) {//위,우
 				detect(x, y, 2);
@@ -143,7 +143,7 @@ void DFS(vector <Info>::iterator iter, int depth) {
 				detect(x, y, 2);
 			}
 			DFS(++temp_iter,depth+1);
-			memcpy(checked, copy_checked[depth], sizeof(copy_checked));
+			memcpy(checked, copy_checked, sizeof(copy_checked));
 		}
 		break;
 	case 4:
@@ -172,7 +172,7 @@ void DFS(vector <Info>::iterator iter, int depth) {
 				detect(x, y, 2);
 			}
 			DFS(++temp_iter,depth+1);
-			memcpy(checked, copy_checked[depth], sizeof(copy_checked));
+			memcpy(checked, copy_checked, sizeof(copy_checked));
 		}
 		break;
 	case 5:
@@ -182,7 +182,7 @@ void DFS(vector <Info>::iterator iter, int depth) {
 		detect(x, y, 2);
 		detect(x, y, 3);
 		DFS(++temp_iter,depth+1);
-		memcpy(checked, copy_checked[depth], sizeof(copy_checked));
+		memcpy(checked, copy_checked, sizeof(copy_checked));
 		break;
 
 	}
