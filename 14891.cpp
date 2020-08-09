@@ -7,7 +7,8 @@
 #include <utility>
 #include <stdlib.h>
 using namespace std;
-int arr[4][8];
+//int arr[4][8];
+string arr[4];
 int cnt = 0;
 int temp = 0;
 int ans = 0;
@@ -64,12 +65,17 @@ void t_turn(int t_n, int orient) {
 
 }
 
-void enter() {
+void enter() {/*
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 8; j++) {
 			scanf("%1d", &arr[i][j]);
 		}
 	}
+	*/
+	for (int i = 0; i < 4; i++) {
+		cin >> arr[i];
+	}
+	cout << arr[0][1];
 
 	cin >> cnt;
 	for (int i = 0; i < cnt; i++) {
@@ -83,7 +89,7 @@ int reverse(int a) {
 	return a * -1;
 }
 void turn(int first, int next,int pm ,int orient) {
-//	debug();
+	debug();
 
 	if (next < 0 || next > 3) return;
 	if (pm == 0) {
@@ -107,7 +113,7 @@ void turn(int first, int next,int pm ,int orient) {
 
 
 void start() {
-//	debug();
+	debug();
 	vector <PairInt> ::iterator v_i = turn_info.begin();
 	for (; v_i != turn_info.end(); v_i++) {
 		int t_n = (*v_i).first;//Åé´Ï¹ÙÄû ¼ıÀÚ
@@ -122,7 +128,7 @@ void start() {
 
 void cal() {
 	for (int i = 0; i < 4; i++) {
-		if (arr[i][0] == 1) {
+		if (arr[i][0] == '1') {
 			if (i == 0) {
 				ans = ans + 1;
 			}
