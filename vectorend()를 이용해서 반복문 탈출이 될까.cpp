@@ -15,7 +15,7 @@ int aaa = 0;
 void dfs(vector<int>::iterator aa) {
 	if (aa == b.end()) {
 		cout << "벡터.end()를 통한 반복문 탈출은 가능하다" << endl;
-
+		return;
 	}
 	aaa++;
 	cout << "깊이 : "<< aaa << endl;
