@@ -39,7 +39,7 @@ void debug() {
 */
 void t_turn(int t_n, int orient) {
 	if (orient == 1) {
-		cout << t_n + 1 << "번째 톱니바퀴 시계방향" << endl;
+//		cout << t_n + 1 << "번째 톱니바퀴 시계방향" << endl;
 		int temp[8];
 		for (int i = 0; i < 8; i++) {
 			temp[i] = arr[t_n][i];
@@ -50,7 +50,7 @@ void t_turn(int t_n, int orient) {
 		arr[t_n][0] = temp[7];
 	}
 	else {
-		cout <<t_n+1 << "번째 톱니바퀴 반시계방향" << endl;
+//		cout <<t_n+1 << "번째 톱니바퀴 반시계방향" << endl;
 		temp = arr[t_n][0];
 		for (int i = 0; i < 8; i++) {
 			if (i == 7) {
@@ -75,7 +75,7 @@ void enter() {
 	for (int i = 0; i < cnt; i++) {
 		int a, b;
 		cin >> a >> b;
-		turn_info.push_back({ a,b });
+		turn_info.push_back({ a-1,b });
 	}
 
 }
@@ -83,13 +83,13 @@ int reverse(int a) {
 	return a * -1;
 }
 void turn(int first, int next,int pm ,int orient) {
-	debug();
+//	debug();
+
 	if (next < 0 || next > 3) return;
 	if (pm == 0) {
 		if (arr[first][6] != arr[next][2]) {
-			cout << first + 1 << "번쨰와 " << next + 1 << "번쨰가 다르므로 진행" << endl;
 			t_turn(next, reverse(orient));
-			int n_next = --next;
+			int n_next = next - 1;
 			turn(next, n_next, 0, reverse(orient));
 		}
 		else return;
@@ -97,68 +97,46 @@ void turn(int first, int next,int pm ,int orient) {
 	else {
 		if (arr[first][2] != arr[next][6]) {
 			t_turn(next, reverse(orient));
-			int n_next = ++next;
+			int n_next = next + 1;
 			turn(next, n_next, 1,reverse(orient));
 		}
 		else return;
 	}
+
 }
 
 
 void start() {
-	debug();
+//	debug();
 	vector <PairInt> ::iterator v_i = turn_info.begin();
 	for (; v_i != turn_info.end(); v_i++) {
 		int t_n = (*v_i).first;//톱니바퀴 숫자
-		t_turn(t_n, (*v_i).second);
-		int n_t_n = --t_n;
+		int n_t_n = t_n -1 ;
 		turn(t_n, n_t_n,0, (*v_i).second);
-		n_t_n = ++t_n;
+		n_t_n = t_n + 1;
 		turn(t_n, n_t_n,1, (*v_i).second);
+		t_turn(t_n, (*v_i).second);
 	}
 }
 
 
 void cal() {
-	vector <PairInt> ::iterator v_i = turn_info.begin();
-	for (; v_i != turn_info.end(); v_i++) {
-		switch((*v_i).first){
-		case 0:
-			if (arr[(*v_i).first][0] == 0) {
-				continue;
-			}
-			else {
+	for (int i = 0; i < 4; i++) {
+		if (arr[i][0] == 1) {
+			if (i == 0) {
 				ans = ans + 1;
 			}
-			break;
-		case 1:
-			if (arr[(*v_i).first][0] == 0) {
-				continue;
-			}
-			else {
+			else if (i == 1) {
 				ans = ans + 2;
 			}
-			break;
-
-		case 2:
-			if (arr[(*v_i).first][0] == 0) {
-				continue;
-			}
-			else {
+			else if (i == 2) {
 				ans = ans + 4;
-			}
-			break;
-
-		case 3:
-			if (arr[(*v_i).first][0] == 0) {
-				continue;
 			}
 			else {
 				ans = ans + 8;
 			}
-			break;
-		
 		}
+
 	}
 
 }
@@ -170,5 +148,4 @@ int main() {
 	cal();
 	cout << ans;
 	system("pause");
-
 }
