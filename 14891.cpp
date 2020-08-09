@@ -89,22 +89,22 @@ int reverse(int a) {
 	return a * -1;
 }
 void turn(int first, int next,int pm ,int orient) {
-	debug();
+//	debug();
 
 	if (next < 0 || next > 3) return;
 	if (pm == 0) {
 		if (arr[first][6] != arr[next][2]) {
-			t_turn(next, reverse(orient));
 			int n_next = next - 1;
 			turn(next, n_next, 0, reverse(orient));
+			t_turn(next, reverse(orient));
 		}
 		else return;
 	}
 	else {
 		if (arr[first][2] != arr[next][6]) {
-			t_turn(next, reverse(orient));
 			int n_next = next + 1;
 			turn(next, n_next, 1,reverse(orient));
+			t_turn(next, reverse(orient));
 		}
 		else return;
 	}
@@ -113,7 +113,7 @@ void turn(int first, int next,int pm ,int orient) {
 
 
 void start() {
-	debug();
+//	debug();
 	vector <PairInt> ::iterator v_i = turn_info.begin();
 	for (; v_i != turn_info.end(); v_i++) {
 		int t_n = (*v_i).first;//Åé´Ï¹ÙÄû ¼ıÀÚ
