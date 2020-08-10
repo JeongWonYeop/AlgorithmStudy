@@ -102,14 +102,14 @@ int min(int a,int b) {
 
 
 void dfs(int cnt) {
+	if (cnt == 4) return;
 	if (all_pass()) {
 		ans = min(ans, cnt-1);
 	//	cout << "<<<<<<<<<<"<<cnt - 1<<">>>>>>>>>>" << endl;
 		return;
 	}
-	if (cnt == 4) return;
-	for (int i = 1; i < H+1; i++) {
-		for (int j = 1; j < N+1; j++) {
+	for (int i = 1; i < H; i++) {
+		for (int j = 1; j < N; j++) {
 	//		cout << "-------"<<cnt<<"--------" << endl;
 			if (!is_checked(i, j)) {
 				enter_line(i, j);
