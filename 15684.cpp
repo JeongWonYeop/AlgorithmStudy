@@ -85,7 +85,7 @@ int is_checked(int x,int y) {
 int all_pass() {
 	int a = 0;
 	for (int i = 1; i < N + 1; i++) {
-	//	cout << i << "세로선 결과 : " << ladder_gotounder(i, 0) << endl;
+	//	cout << i << "세로선 결과 : " << ladder_gotounder(i, 0) << endl; 실수 2: 주어진 힌트를 왜 안봤어? 디버깅 과정에서 그 답안지로 문제점을 바로 찾아냈잖아. 그걸 왜 니가 풀고 있냐~
 		if (ladder_gotounder(i, 0) == i) {
 			a++;
 		}
