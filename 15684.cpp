@@ -10,11 +10,11 @@
 using namespace std;
 int N, M, H;
 typedef pair <int, int> PairInt;
-int vec[11][31] = { 0, }; //좌->우
-int vec2[11][31] = { 0, }; //우->좌
-int checked[11][31] = { 0, };
+int vec[31][11] = { 0, }; //좌->우
+int vec2[31][11] = { 0, }; //우->좌
+int checked[31][11] = { 0, };
 int ans = 987654321;
-int goal = 0;
+int used[31][11] = { 0, };
 /*
 	사다리 내려가는 함수(출발번호)
 	가로선 서로 겹치는지 아닌지 검사하는 함수.
@@ -86,8 +86,7 @@ int ladder_gotounder(int depth,int N) {//depth 행 , N열
 
 //겹치면 1 반환
 int is_checked(int x,int y) {
-	if (checked[x][y] == 1) return 1;
-	if (checked[x][y + 1] == 1) return 1;
+	if (checked[x][y] == 1 || checked[x][y + 1] == 1) return 1;
 	else return 0;
 }
 //모든 i세로선이 i결과.
@@ -112,7 +111,7 @@ int min(int a,int b) {
 }
 
 
-void dfs(int cnt) {
+void dfs(int cnt,int I,int J) {
 
 	if (all_pass()) {
 		ans = min(ans, cnt-1);
@@ -120,18 +119,26 @@ void dfs(int cnt) {
 		return;
 	}
 	if (cnt == 4) return;
-	for (int i = 1; i < H+1; i++) {
+
+	
+	for (int i = I; i < H+1; i++) { //③ I : 3
+//		cout << i << endl;
 		for (int j = 1; j < N; j++) {
-	//		cout << "-------"<<cnt<<"--------" << endl;
-			if (!is_checked(i, j)) {
+			if (i == I) j = J++; //④ i : 3 j : 4 부터 시작
+//			cout << j << endl;
+			if (!is_checked(i, j) ) { // 0 1 2 / 0 1 3 / 0 1 4 / 0 2 1(X) / 0 2 3 / 0 2 4 / 0 3 1(X) / 0 3 2 (X) / 0 3 4 / 0 4 1(X) / 0 4 2(X) / 0 4 3(X)
 				enter_line(i, j);
-	//			cout << i << " " << j<<endl;
-				dfs(cnt + 1);
+//				cout << "-------"<< cnt <<"-------" << endl;
+//				cout << i << " " << j<<endl; //①가정 : i: 3 j :3
+				dfs(cnt + 1,i,j+1); // ②i: 3 j+1 :4
 				remove_line(i, j);
 			}
 			
 		}
 	}
+	
+
+
 
 
 
@@ -140,7 +147,7 @@ void dfs(int cnt) {
 
 int main() {
 	enter();
-	dfs(1);
+	dfs(1,1,1);
 	if (ans == 987654321) ans = -1;
 	cout << ans;
 	system("pause");
