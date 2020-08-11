@@ -25,7 +25,7 @@ int goal = 0;
 */
 
 
-void enter_line(int x,int y) {
+void enter_line(int x,int y) {//x:행,y:열
 	vec[x][y] = 1;
 	vec2[x][y + 1] = 1;
 	checked[x][y] = 1;
@@ -62,22 +62,26 @@ void degug1() {
 	*/
 }
 
-void ladder_gotounder(int N,int depth) {//N열, depth 행
-	if (depth == H + 1) {
-		goal = N;
-		return;
-	}
-	
-	int n_N = N;
-	
-	if (vec[depth][N] == 1) {
-		n_N = N + 1;
-	}
-	else if(vec2[depth][N] == 1){
-		n_N = N - 1;
+int ladder_gotounder(int depth,int N) {//depth 행 , N열 
+	/*
+		depth행이 H+1 이 되면 해당 N열을 리턴.
+	*/
+	while (depth != H + 1) {
+//		cout << N << "세로선" << depth << "깊이" << endl;
+		if (vec[depth][N] == 1) {
+//			cout << "우측이동" << endl;
+			++N;
+		}
+		else if (vec2[depth][N] == 1) {
+//			cout << "좌측이동" << endl;
+			--N;
+		}
+		
+		++depth;
+//		cout << endl;
 	}
 
-	ladder_gotounder(n_N, depth + 1);
+	return N;
 }
 
 //겹치면 1 반환
@@ -90,9 +94,10 @@ int is_checked(int x,int y) {
 int all_pass() {
 	int a = 0;
 	for (int i = 1; i < N + 1; i++) {
-	//	cout << i << "세로선 결과 : " << ladder_gotounder(i, 0) << endl; 실수 2: 주어진 힌트를 왜 안봤어? 디버깅 과정에서 그 답안지로 문제점을 바로 찾아냈잖아. 그걸 왜 니가 풀고 있냐~
-		ladder_gotounder(i, 0);
-		if (goal == i) {
+	//cout << i << "세로선 결과 : " << ladder_gotounder(0, i) << endl; 
+		//실수 2: 주어진 힌트를 왜 안봤어? 디버깅 과정에서 그 답안지로 문제점을 바로 찾아냈잖아. 그걸 왜 니가 풀고 있냐~
+	
+		if (ladder_gotounder(0,i) == i) {
 			a++;
 		}
 	}
@@ -116,7 +121,7 @@ void dfs(int cnt) {
 	}
 	if (cnt == 4) return;
 	for (int i = 1; i < H+1; i++) {
-		for (int j = 1; j < N+1; j++) {
+		for (int j = 1; j < N; j++) {
 	//		cout << "-------"<<cnt<<"--------" << endl;
 			if (!is_checked(i, j)) {
 				enter_line(i, j);
@@ -138,4 +143,5 @@ int main() {
 	dfs(1);
 	if (ans == 987654321) ans = -1;
 	cout << ans;
+	system("pause");
 }
