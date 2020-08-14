@@ -12,6 +12,7 @@ int N, M; // 2<= N <= 50, 1<= M <=13
 int board[51][51] = { 0, };
 int check[51][51] = { 0, };
 int checked[51][51] = { 0, }; // 1이 표시됐는지 여부
+bool visited[13];
 vector <int> check_home;
 typedef pair <int, int> PairInt;
 vector <PairInt> vec2;
@@ -83,30 +84,42 @@ int min(int a, int b) {
 	if (a > b) return b;
 	else return a;
 }
-int return_ans() {
-
-}
 int abs(int a) {
 	if (a < 0) return a * -1;
 	else return a;
 }
 
-void DFS(int cnt,int end) {
-	if (cnt == end) {
-		ans = min(return_ans(), ans);
+int distance(PairInt a, PairInt b) {
+	return abs(a.first - b.first) + abs(a.second - b.second);
+}
+
+void DFS(int cnt,int selected) {
+	if (selected == M) {
+		int tempResult = 0;
+		for (int i = 0; i < vec1.size(); i++) {//당연히 모두 연산돼야되는 부분
+			int dist = 987654321;
+			for (int j = 0; j < vec2.size(); j++) { // 선택된 치킨집만 연산돼야함.
+				if(visited[j])
+					dist = min(dist,distance(vec1[i], vec2[j]));
+			}
+			tempResult += dist;
+			
+		}
+		ans = min(ans, tempResult);		
 		return;
 	}
-	int copy_check[51][51];
-	memcpy(copy_check, check,sizeof(check));
-	vec2[cnt].first;
-	DFS(cnt + 1, end);
-	memcpy(check, copy_check, sizeof(copy_check));
+	if (cnt == vec2.size()) return;
+	//프렌차이즈 선정
+	visited[cnt] = true;
+	DFS(cnt + 1, selected + 1);
+	//프랜차이즈 선정X
+	visited[cnt] = false;
+	DFS(cnt + 1, selected);
 
 }
 
 int main() {
 	enter();
-	result.clear();
-	DFS(0,vec2.size()+1);
-	system("pause");
+	DFS(0, 0);
+	cout << ans;
 }
