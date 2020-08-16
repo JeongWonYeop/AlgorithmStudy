@@ -40,19 +40,26 @@ void initialization() {
 	}
 }
 
-void enter() {
-	string a;
-	for (int i = 0; i < 3; i++) {
-		cin >> a;
-		cout << a;
-	}
-}
 
 
 
 int main() {
 	initialization();
-	enter();
+	int N;
+	cin >> N;
+	string a;
+	a = "aaa";
+	while (N>0) {
+		cout << a;
+
+		cin >> a;
+
+
+
+
+		N--;
+	}
+	cout << a;
 	system("pause");
 
 }
