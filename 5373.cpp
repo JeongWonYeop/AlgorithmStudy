@@ -47,9 +47,9 @@ int main() {
 	initialization();
 	int N;
 	cin >> N;
-	string a;
-	a = "aaa";
+
 	while (N>0) {
+		string a;
 		cout << a;
 
 		cin >> a;
