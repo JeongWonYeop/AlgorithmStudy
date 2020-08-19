@@ -53,6 +53,7 @@ void rotate(int a,int b) {
 	/*
 		a : U: 0, D: 1, F: 2, B: 3, L: 4, R: 5
 		b : 1 : + 0 : -
+		L과 R은 back의 경우에 달라진다. 왜냐하면 해당 블록을 바라볼 때 관점이기 때문에.
 
 	*/
 	if (a == 0) {
@@ -102,6 +103,12 @@ void rotate(int a,int b) {
 			right_[0][2] = copy_f[0][2];
 		}
 	}
+	/*
+	a : U: 0, D: 1, F: 2, B: 3, L: 4, R: 5
+	b : 1 : + 0 : -
+	L과 R은 back의 경우에 달라진다. 왜냐하면 해당 블록을 바라볼 때 관점이기 때문에.
+
+	*/
 	else if (a == 1) {
 		if (b == 1) {
 			down[0][0] = copy_d[2][0];
@@ -148,6 +155,12 @@ void rotate(int a,int b) {
 			right_[2][2] = copy_f[2][2];
 		}
 	}
+	/*
+	a : U: 0, D: 1, F: 2, B: 3, L: 4, R: 5
+	b : 1 : + 0 : -
+	L과 R은 back의 경우에 달라진다. 왜냐하면 해당 블록을 바라볼 때 관점이기 때문에.
+
+	*/
 	else if(a == 2){
 		if(b == 1){
 			front[0][0] = copy_f[2][0];
@@ -161,15 +174,15 @@ void rotate(int a,int b) {
 			up[2][0] = copy_l[2][0];
 			up[2][1] = copy_l[2][1];
 			up[2][2] = copy_l[2][2];
-			left_[2][0] = copy_d[2][0];
-			left_[2][1] = copy_d[2][1];
-			left_[2][2] = copy_d[2][2];
-			right_[2][0] = copy_u[2][0];
-			right_[2][1] = copy_u[2][1];
-			right_[2][2] = copy_u[2][2];
-			down[2][0] = copy_r[2][0];
-			down[2][1] = copy_r[2][1];
-			down[2][2] = copy_r[2][2];
+			left_[0][2] = copy_d[0][0];
+			left_[1][2] = copy_d[0][1];
+			left_[2][2] = copy_d[0][2];
+			right_[0][0] = copy_u[2][0];
+			right_[1][0] = copy_u[2][1];
+			right_[2][0] = copy_u[2][2];
+			down[0][0] = copy_r[0][0];
+			down[0][1] = copy_r[1][0];
+			down[0][2] = copy_r[2][0];
 
 		}
 		else {
@@ -181,22 +194,28 @@ void rotate(int a,int b) {
 			front[2][2] = copy_f[2][0];
 			front[1][2] = copy_f[2][1];
 			front[0][2] = copy_f[2][2];
-			up[2][0] = copy_r[2][0];
-			up[2][1] = copy_r[2][1];
-			up[2][2] = copy_r[2][2];
-			left_[2][0] = copy_d[2][0];
-			left_[2][1] = copy_d[2][1];
-			left_[2][2] = copy_d[2][2];
-			right_[2][0] = copy_u[2][0];
-			right_[2][1] = copy_u[2][1];
-			right_[2][2] = copy_u[2][2];
-			down[2][0] = copy_r[2][0];
-			down[2][1] = copy_r[2][1];
-			down[2][2] = copy_r[2][2];
+			up[2][0] = copy_r[0][0];
+			up[2][1] = copy_r[1][0];
+			up[2][2] = copy_r[2][0];
+			left_[0][2] = copy_u[2][0];
+			left_[1][2] = copy_u[2][1];
+			left_[2][2] = copy_u[2][2];
+			right_[0][0] = copy_d[0][0];
+			right_[1][0] = copy_d[0][1];
+			right_[2][0] = copy_d[0][2];
+			down[2][0] = copy_l[2][0];
+			down[2][1] = copy_l[2][1];
+			down[2][2] = copy_l[2][2];
 		}
 	}
+	/*
+	a : U: 0, D: 1, F: 2, B: 3, L: 4, R: 5
+	b : 1 : + 0 : -
+	L과 R은 back의 경우에 달라진다. 왜냐하면 해당 블록을 바라볼 때 관점이기 때문에.
+
+	*/
 	else if (a == 3) {//b
-		if (b == 1) {
+		if (b == 1) {//front 기준에서 바라볼 때의 시계방향
 			back[0][0] = copy_b[2][0];
 			back[0][1] = copy_b[1][0];
 			back[0][2] = copy_b[0][0];
@@ -206,19 +225,19 @@ void rotate(int a,int b) {
 			back[2][1] = copy_b[1][2];
 			back[2][2] = copy_b[0][2];
 			up[0][0] = copy_l[0][0];
-			up[0][1] = copy_l[0][1];
-			up[0][2] = copy_l[0][2];
-			left_[0][0] = copy_d[0][0];
-			left_[0][1] = copy_d[0][1];
-			left_[0][2] = copy_d[0][2];
-			right_[0][0] = copy_u[0][0];
-			right_[0][1] = copy_u[0][1];
-			right_[0][2] = copy_u[0][2];
-			down[0][0] = copy_r[0][0];
-			down[0][1] = copy_r[0][1];
-			down[0][2] = copy_r[0][2];
+			up[0][1] = copy_l[1][0];
+			up[0][2] = copy_l[2][0];
+			left_[0][0] = copy_d[2][0];
+			left_[1][0] = copy_d[2][1];
+			left_[2][0] = copy_d[2][2];
+			right_[0][2] = copy_u[0][0];
+			right_[1][2] = copy_u[0][1];
+			right_[2][2] = copy_u[0][2];
+			down[2][0] = copy_r[0][2];
+			down[2][1] = copy_r[1][2];
+			down[2][2] = copy_r[2][2];
 		}
-		else {
+		else {//front 기준에서 바라볼 때의 반시계방향
 			back[2][0] = copy_b[0][0];
 			back[1][0] = copy_b[0][1];
 			back[0][0] = copy_b[0][2];
@@ -227,21 +246,27 @@ void rotate(int a,int b) {
 			back[2][2] = copy_b[2][0];
 			back[1][2] = copy_b[2][1];
 			back[0][2] = copy_b[2][2];
-			up[0][0] = copy_r[0][0];
-			up[0][1] = copy_r[0][1];
-			up[0][2] = copy_r[0][2];
+			up[0][0] = copy_r[0][2];
+			up[0][1] = copy_r[1][2];
+			up[0][2] = copy_r[2][2];
 			left_[0][0] = copy_u[0][0];
-			left_[0][1] = copy_u[0][1];
-			left_[0][2] = copy_u[0][2];
-			right_[0][0] = copy_d[0][0];
-			right_[0][1] = copy_d[0][1];
-			right_[0][2] = copy_d[0][2];
-			down[0][0] = copy_l[0][0];
-			down[0][1] = copy_l[0][1];
-			down[0][2] = copy_l[0][2];
+			left_[1][0] = copy_u[0][1];
+			left_[2][0] = copy_u[0][2];
+			right_[0][2] = copy_d[2][0];
+			right_[1][2] = copy_d[2][1];
+			right_[2][2] = copy_d[2][2];
+			down[2][0] = copy_l[0][0];
+			down[2][1] = copy_l[1][0];
+			down[2][2] = copy_l[2][0];
 
 		}
 	}
+	/*
+	a : U: 0, D: 1, F: 2, B: 3, L: 4, R: 5
+	b : 1 : + 0 : -
+	L과 R은 back의 경우에 달라진다. 왜냐하면 해당 블록을 바라볼 때 관점이기 때문에.
+
+	*/
 	else if (a == 4) {//l
 		if (b == 1) {
 			left_[0][0] = copy_l[2][0];
@@ -261,9 +286,9 @@ void rotate(int a,int b) {
 			down[0][0] = copy_f[0][0];
 			down[1][0] = copy_f[1][0];
 			down[2][0] = copy_f[2][0];
-			back[0][0] = copy_d[0][0];
-			back[1][0] = copy_d[1][0];
-			back[2][0] = copy_d[2][0];
+			back[0][2] = copy_d[0][0];
+			back[1][2] = copy_d[1][0];
+			back[2][2] = copy_d[2][0];
 		}
 		else {
 			left_[2][0] = copy_l[0][0];
@@ -283,9 +308,9 @@ void rotate(int a,int b) {
 			down[0][0] = copy_b[0][0];
 			down[1][0] = copy_b[1][0];
 			down[2][0] = copy_b[2][0];
-			back[0][0] = copy_u[0][0];
-			back[1][0] = copy_u[1][0];
-			back[2][0] = copy_u[2][0];
+			back[0][2] = copy_u[0][0];
+			back[1][2] = copy_u[1][0];
+			back[2][2] = copy_u[2][0];
 		}
 	}
 	else if (a == 5) {//r
@@ -476,7 +501,7 @@ int main() {
 
 				}
 				else {
-					rotate(5, 1);
+					rotate(5,1);
 
 
 				}
