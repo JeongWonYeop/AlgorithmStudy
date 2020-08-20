@@ -6,6 +6,7 @@
 #include <functional>
 #include <utility>
 #include <string>
+#include <cstring>
 using namespace std;
 int up[3][3] = { 0, };
 int down[3][3] = { 0, };
@@ -176,9 +177,9 @@ void rotate(int a,int b) {
 			up[2][0] = copy_l[2][2];
 			up[2][1] = copy_l[1][2];
 			up[2][2] = copy_l[0][2];
-			left_[0][2] = copy_d[0][0];
+			left_[2][2] = copy_d[0][0];
 			left_[1][2] = copy_d[0][1];
-			left_[2][2] = copy_d[0][2];
+			left_[0][2] = copy_d[0][2];
 			right_[0][0] = copy_u[2][0];
 			right_[1][0] = copy_u[2][1];
 			right_[2][0] = copy_u[2][2];
@@ -199,15 +200,15 @@ void rotate(int a,int b) {
 			up[2][0] = copy_r[0][0];
 			up[2][1] = copy_r[1][0];
 			up[2][2] = copy_r[2][0];
-			left_[0][2] = copy_u[2][0];
+			left_[0][2] = copy_u[2][2];
 			left_[1][2] = copy_u[2][1];
-			left_[2][2] = copy_u[2][2];
-			right_[0][0] = copy_d[0][0];
+			left_[2][2] = copy_u[2][0];
+			right_[0][0] = copy_d[0][2];
 			right_[1][0] = copy_d[0][1];
-			right_[2][0] = copy_d[0][2];
-			down[0][0] = copy_l[2][2];
+			right_[2][0] = copy_d[0][0];
+			down[0][0] = copy_l[0][2];
 			down[0][1] = copy_l[1][2];
-			down[0][2] = copy_l[0][2];
+			down[0][2] = copy_l[2][2];
 		}
 	}
 	/*
@@ -219,6 +220,30 @@ void rotate(int a,int b) {
 	else if (a == 3) {//b
 		if (b == 1) {//front 기준에서 바라볼 때의 시계방향
 
+			back[0][0] = copy_b[2][0];
+			back[0][1] = copy_b[1][0];
+			back[0][2] = copy_b[0][0];
+			back[1][0] = copy_b[2][1];
+			back[1][2] = copy_b[0][1];
+			back[2][0] = copy_b[2][2];
+			back[2][1] = copy_b[1][2];
+			back[2][2] = copy_b[0][2];
+			up[0][0] = copy_r[0][2];
+			up[0][1] = copy_r[1][2];
+			up[0][2] = copy_r[2][2];
+			left_[0][0] = copy_u[0][2];
+			left_[1][0] = copy_u[0][1];
+			left_[2][0] = copy_u[0][0];
+			right_[0][2] = copy_d[2][2];
+			right_[1][2] = copy_d[2][1];
+			right_[2][2] = copy_d[2][0];
+			down[2][0] = copy_l[0][0];
+			down[2][1] = copy_l[1][0];
+			down[2][2] = copy_l[2][0];
+
+			
+		}
+		else {//front 기준에서 바라볼 때의 반시계방향
 			back[2][0] = copy_b[0][0];
 			back[1][0] = copy_b[0][1];
 			back[0][0] = copy_b[0][2];
@@ -236,32 +261,9 @@ void rotate(int a,int b) {
 			right_[0][2] = copy_u[0][0];
 			right_[1][2] = copy_u[0][1];
 			right_[2][2] = copy_u[0][2];
-			down[2][0] = copy_r[0][2];
+			down[2][0] = copy_r[2][2];
 			down[2][1] = copy_r[1][2];
-			down[2][2] = copy_r[2][2];
-		}
-		else {//front 기준에서 바라볼 때의 반시계방향
-			back[0][0] = copy_b[2][0];
-			back[0][1] = copy_b[1][0];
-			back[0][2] = copy_b[0][0];
-			back[1][0] = copy_b[2][1];
-			back[1][2] = copy_b[0][1];
-			back[2][0] = copy_b[2][2];
-			back[2][1] = copy_b[1][2];
-			back[2][2] = copy_b[0][2];
-			up[0][0] = copy_r[0][2];
-			up[0][1] = copy_r[1][2];
-			up[0][2] = copy_r[2][2];
-			left_[0][0] = copy_u[0][0];
-			left_[1][0] = copy_u[0][1];
-			left_[2][0] = copy_u[0][2];
-			right_[0][2] = copy_d[2][0];
-			right_[1][2] = copy_d[2][1];
-			right_[2][2] = copy_d[2][2];
-			down[2][0] = copy_l[2][0];
-			down[2][1] = copy_l[1][0];
-			down[2][2] = copy_l[0][0];
-
+			down[2][2] = copy_r[0][2];
 		}
 	}
 	/*
@@ -303,15 +305,15 @@ void rotate(int a,int b) {
 			up[0][0] = copy_f[0][0];
 			up[1][0] = copy_f[1][0];
 			up[2][0] = copy_f[2][0];
-			front[0][0] = copy_d[2][0];
+			front[0][0] = copy_d[0][0];
 			front[1][0] = copy_d[1][0];
-			front[2][0] = copy_d[0][0];
+			front[2][0] = copy_d[2][0];
 			down[0][0] = copy_b[2][2];
 			down[1][0] = copy_b[1][2];
 			down[2][0] = copy_b[0][2];
-			back[0][2] = copy_u[0][0];
+			back[0][2] = copy_u[2][0];
 			back[1][2] = copy_u[1][0];
-			back[2][2] = copy_u[2][0];
+			back[2][2] = copy_u[0][0];
 		}
 	}
 	else if (a == 5) {//r
@@ -469,11 +471,11 @@ int main() {
 					3 4 5   7 4 1
 					6 7 8   8 5 2
 					*/
-					rotate(3, 0);
+					rotate(3, 1);
 
 				}
 				else {
-					rotate(3, 1);
+					rotate(3, 0);
 
 
 				}
@@ -510,9 +512,10 @@ int main() {
 
 				}
 			}
-
+			/*
 			cout << endl;
 			cout << "up" << endl;
+			
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
 					if (up[i][j] == 0) cout << 'w';
@@ -523,6 +526,7 @@ int main() {
 					if (up[i][j] == 5) cout << 'b';
 				}cout << endl;
 			}
+			
 			cout << "back" << endl;
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
@@ -579,8 +583,19 @@ int main() {
 					if (down[i][j] == 5) cout << 'b';
 				}cout << endl;
 			}
-		}
 
+			*/
+		}
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (up[i][j] == 0) cout << 'w';
+				if (up[i][j] == 1) cout << 'y';
+				if (up[i][j] == 2) cout << 'r';
+				if (up[i][j] == 3) cout << 'o';
+				if (up[i][j] == 4) cout << 'g';
+				if (up[i][j] == 5) cout << 'b';
+			}cout << endl;
+		}
 		N--;
 	}
 	/*
