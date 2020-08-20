@@ -264,8 +264,6 @@ void rotate(int a,int b) {
 	/*
 	a : U: 0, D: 1, F: 2, B: 3, L: 4, R: 5
 	b : 1 : + 0 : -
-	L과 R은 back의 경우에 달라진다. 왜냐하면 해당 블록을 바라볼 때 관점이기 때문에.
-
 	*/
 	else if (a == 4) {//l
 		if (b == 1) {
