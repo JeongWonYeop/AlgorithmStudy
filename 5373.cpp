@@ -177,15 +177,15 @@ void rotate(int a,int b) {
 			up[2][0] = copy_l[2][2];
 			up[2][1] = copy_l[1][2];
 			up[2][2] = copy_l[0][2];
-			left_[2][2] = copy_d[0][0];
+			left_[2][2] = copy_d[0][2];
 			left_[1][2] = copy_d[0][1];
-			left_[0][2] = copy_d[0][2];
+			left_[0][2] = copy_d[0][0];
 			right_[0][0] = copy_u[2][0];
 			right_[1][0] = copy_u[2][1];
 			right_[2][0] = copy_u[2][2];
-			down[0][0] = copy_r[0][0];
+			down[0][0] = copy_r[2][0];
 			down[0][1] = copy_r[1][0];
-			down[0][2] = copy_r[2][0];
+			down[0][2] = copy_r[0][0];
 
 		}
 		else {//O
