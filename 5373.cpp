@@ -72,9 +72,9 @@ void rotate(int a,int b) {
 			left_[0][0] = copy_f[0][0];
 			left_[0][1] = copy_f[0][1];
 			left_[0][2] = copy_f[0][2];
-			back[0][0] = copy_l[0][0];
-			back[0][1] = copy_l[0][1];
-			back[0][2] = copy_l[0][2];
+			back[2][0] = copy_l[0][0];
+			back[2][1] = copy_l[0][1];
+			back[2][2] = copy_l[0][2];
 			right_[0][0] = copy_b[0][0];
 			right_[0][1] = copy_b[0][1];
 			right_[0][2] = copy_b[0][2];
@@ -95,9 +95,9 @@ void rotate(int a,int b) {
 			left_[0][0] = copy_b[0][0];
 			left_[0][1] = copy_b[0][1];
 			left_[0][2] = copy_b[0][2];
-			back[0][0] = copy_r[0][0];
-			back[0][1] = copy_r[0][1];
-			back[0][2] = copy_r[0][2];
+			back[2][0] = copy_r[0][0];
+			back[2][1] = copy_r[0][1];
+			back[2][2] = copy_r[0][2];
 			right_[0][0] = copy_f[0][0];
 			right_[0][1] = copy_f[0][1];
 			right_[0][2] = copy_f[0][2];
@@ -125,9 +125,9 @@ void rotate(int a,int b) {
 			left_[2][0] = copy_f[2][0];
 			left_[2][1] = copy_f[2][1];
 			left_[2][2] = copy_f[2][2];
-			back[2][0] = copy_l[2][0];
-			back[2][1] = copy_l[2][1];
-			back[2][2] = copy_l[2][2];
+			back[0][0] = copy_l[2][0];
+			back[0][1] = copy_l[2][1];
+			back[0][2] = copy_l[2][2];
 			right_[2][0] = copy_b[2][0];
 			right_[2][1] = copy_b[2][1];
 			right_[2][2] = copy_b[2][2];
@@ -147,9 +147,9 @@ void rotate(int a,int b) {
 			left_[2][0] = copy_b[2][0];
 			left_[2][1] = copy_b[2][1];
 			left_[2][2] = copy_b[2][2];
-			back[2][0] = copy_r[2][0];
-			back[2][1] = copy_r[2][1];
-			back[2][2] = copy_r[2][2];
+			back[0][0] = copy_r[2][0];
+			back[0][1] = copy_r[2][1];
+			back[0][2] = copy_r[2][2];
 			right_[2][0] = copy_f[2][0];
 			right_[2][1] = copy_f[2][1];
 			right_[2][2] = copy_f[2][2];
@@ -284,9 +284,9 @@ void rotate(int a,int b) {
 			down[0][0] = copy_f[0][0];
 			down[1][0] = copy_f[1][0];
 			down[2][0] = copy_f[2][0];
-			back[0][2] = copy_d[0][0];
-			back[1][2] = copy_d[1][0];
-			back[2][2] = copy_d[2][0];
+			back[0][0] = copy_d[0][0];
+			back[1][0] = copy_d[1][0];
+			back[2][0] = copy_d[2][0];
 		}
 		else {
 			left_[2][0] = copy_l[0][0];
@@ -306,9 +306,9 @@ void rotate(int a,int b) {
 			down[0][0] = copy_b[0][0];
 			down[1][0] = copy_b[1][0];
 			down[2][0] = copy_b[2][0];
-			back[0][2] = copy_u[0][0];
-			back[1][2] = copy_u[1][0];
-			back[2][2] = copy_u[2][0];
+			back[0][0] = copy_u[0][0];
+			back[1][0] = copy_u[1][0];
+			back[2][0] = copy_u[2][0];
 		}
 	}
 	else if (a == 5) {//r
@@ -330,9 +330,9 @@ void rotate(int a,int b) {
 			down[0][2] = copy_f[0][2];
 			down[1][2] = copy_f[1][2];
 			down[2][2] = copy_f[2][2];
-			back[0][2] = copy_d[0][2];
-			back[1][2] = copy_d[1][2];
-			back[2][2] = copy_d[2][2];
+			back[0][0] = copy_d[0][2];
+			back[1][0] = copy_d[1][2];
+			back[2][0] = copy_d[2][2];
 		}
 		else {
 			right_[2][0] = copy_r[0][0];
@@ -352,9 +352,9 @@ void rotate(int a,int b) {
 			down[0][2] = copy_b[0][2];
 			down[1][2] = copy_b[1][2];
 			down[2][2] = copy_b[2][2];
-			back[0][2] = copy_u[0][2];
-			back[1][2] = copy_u[1][2];
-			back[2][2] = copy_u[2][2];
+			back[0][0] = copy_u[0][2];
+			back[1][0] = copy_u[1][2];
+			back[2][0] = copy_u[2][2];
 		}
 	}
 }
