@@ -13,7 +13,6 @@ int sero, karo, dochak;
 int change[2001][1501] = { 0, };
 int hang = 1;
 typedef pair <int, int> Pair;
-vector <Pair> dochak_info;
 //vector <int> sero_info[1501];
 /*
 	1열 2열 3열
@@ -55,15 +54,10 @@ void enter() {
 		change[hang][temp_y] = temp_x;
 		change[hang++][temp_x] = temp_y;
 	}
-	for (int i = 0; i < dochak; i++) {
-		int s, g;//start,goal
-		cin >> s >> g;
-		dochak_info.push_back({ s,g });
-	}
 }
 
 void initialization() {
-	dochak_info.clear();
+
 	for (int i = 0; i < 2001; i++) {
 		for (int j = 0; j < 1501; j++) {
 			change[i][j] = 0;
@@ -71,7 +65,7 @@ void initialization() {
 	}
 	Answer = 0;
 }
-
+/*
 void debug() {
 	for (int i = 0; i < hang; i++) {
 		for(int j = 1 ; j< sero+1;j++){
@@ -83,6 +77,7 @@ void debug() {
 		cout << "출발 : " << dochak_info[i].first << "도착 :" << dochak_info[i].second << endl;
 	}
 }
+*/
 /*
 사다리는 만약에 1 진행한다 치면,
 DFS(행0,열1,dochak,cnt0) // 0은 무시한갯수
@@ -101,19 +96,21 @@ DFS(2행, 1열, cnt+1)
 DFS 나가서 	만약에 ans 가 987654321 라면 ans = -1;
 */
 void DFS(int h, int y, int doch ,int cnt) {
-//	cout << h << "행" << y << "열" << endl;
-//	cout << "무시한 갯수" << cnt << endl;
-	if (h == hang) {
-//		cout << h << endl;
-//		cout << hang << endl;
-		if (y == doch) {
-			aa = mmin(aa, cnt);
-		}
-		return;
-	}
+	cout << h << "행" << y << "열" << endl;
+	cout << "무시한 갯수" << cnt << endl;
 
-	if (change[h + 1][y] == 0) DFS(h + 1, y, doch, cnt);
-	else {
+	while(change[h + 1][y] == 0){
+		h = h + 1;
+		if (h == hang) {
+			//		cout << h << endl;
+			//		cout << hang << endl;
+			if (y == doch) {
+				aa = mmin(aa, cnt);
+			}
+			return;
+		}
+	}
+	if (change[h + 1][y] != 0){
 		int copy_cnt = cnt;
 		DFS(h + 1, change[h + 1][y], doch, cnt);
 		cnt = copy_cnt;
@@ -137,16 +134,24 @@ int main() {
 	//	debug();
 		
 
-		for (int i = 0; i < dochak_info.size(); i++) {
+		for (int i = 0; i < dochak; i++) {
+			int s, g;//start,goal
+			cin >> s >> g;
 			aa = 987654321;
-			DFS(0, dochak_info[i].first, dochak_info[i].second, 0);
+			DFS(0, s, g, 0);
 			if (aa == 987654321) aa = -1;
-//			cout << aa << endl;
+			//			cout << aa << endl;
 			Answer = Answer + aa;
+			
+
+
+
 		}
+	
 
 		cout << "Case #" << test_case + 1 << endl;
 		cout << Answer << endl;
 	}
+	system("pause");
 	return 0;
 }
