@@ -84,7 +84,7 @@ int main(int argc, char** argv)
 		for (int i = 0; i < K; i++) {
 			sum_v.push_back(sik[0][i] + sik[1][i]);
 		}
-		sort(sum_v.begin(), sum_v.end(), greater<int>());
+		sort(sum_v.begin(), sum_v.end(), greater<int>()); // 벡터 소트가 이렇게 편할줄이야.
 //		cout << sum_v[0] << endl;
 
 
