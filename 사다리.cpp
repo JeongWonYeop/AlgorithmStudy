@@ -12,6 +12,7 @@ int aa;
 int sero, karo, dochak;
 int change[2001][1501] = { 0, };
 int hang = 1;
+int MEMORY = 1;
 typedef pair <int, int> Pair;
 //vector <int> sero_info[1501];
 /*
@@ -37,7 +38,10 @@ typedef pair <int, int> Pair;
 			//      무시한갯수 cnt 증가
 			DFS(2행, 1열, cnt+1)
 
+	메모이제이션
+		벡터 [2001][1501] <Pair <int,int> >  도착점, 무시한갯수.
 
+		해당 좌표에 도착점이 있으면 cnt + 해당 무시한갯수 return;
 
 */
 
@@ -58,12 +62,14 @@ void enter() {
 
 void initialization() {
 
-	for (int i = 0; i < 2001; i++) {
-		for (int j = 0; j < 1501; j++) {
+	for (int i = 1; i < 2001; i++) {
+		for (int j = 1; j < 1501; j++) {
 			change[i][j] = 0;
+//			Memo[i][j].clear();
 		}
 	}
 	Answer = 0;
+	hang = 1;
 }
 /*
 void debug() {
@@ -96,21 +102,24 @@ DFS(2행, 1열, cnt+1)
 DFS 나가서 	만약에 ans 가 987654321 라면 ans = -1;
 */
 void DFS(int h, int y, int doch ,int cnt) {
+//cout << MEMORY++ << endl;
 	cout << h << "행" << y << "열" << endl;
 	cout << "무시한 갯수" << cnt << endl;
+
+	if (aa <= cnt) return;
 
 	while(change[h + 1][y] == 0){
 		h = h + 1;
 		if (h == hang) {
-			//		cout << h << endl;
-			//		cout << hang << endl;
+//			cout <<"h : "<< h << endl;
+//			cout <<"hang : "<< hang << endl;
 			if (y == doch) {
 				aa = mmin(aa, cnt);
 			}
 			return;
 		}
 	}
-	if (change[h + 1][y] != 0){
+	if (change[h + 1][y] != 0){ // 최대 2000번까지 가능.
 		int copy_cnt = cnt;
 		DFS(h + 1, change[h + 1][y], doch, cnt);
 		cnt = copy_cnt;
@@ -138,7 +147,7 @@ int main() {
 			int s, g;//start,goal
 			cin >> s >> g;
 			aa = 987654321;
-			DFS(0, s, g, 0);
+			DFS(0, s, g, 0);//int 형 4개.
 			if (aa == 987654321) aa = -1;
 			//			cout << aa << endl;
 			Answer = Answer + aa;
