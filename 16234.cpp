@@ -103,12 +103,19 @@ void BFS() {
 					}
 				}
 			}
-			else continue;
+			else continue;//있어도그만 없어도 그만.
 		}
 
 		x_y.pop();
 	}
 }
+int first_check(int x, int y) {
+	if ((abs(board[x][y] - board[x][y + 1]) >= L && abs(board[x][y] - board[x][y + 1]) <= R) || (abs(board[x+1][y] - board[x][y]) >= L && abs(board[x+1][y] - board[x][y]) <= R)) {
+		return 1;
+	}
+	else return 0;
+}
+
 int main() {
 	enter();
 	int sum = 0;
@@ -122,24 +129,28 @@ int main() {
 		}
 		for(int i = 0 ; i < N; i++){//50
 			for(int j = 0 ; j < N; j++){//50
-				if(checked[i][j] == 0){
-					Number_yunhab = Number_yunhab + 1;
-					x_y.push({ i,j });
-					checked[i][j] = Number_yunhab;
-					temp = 0;
-					temp_sum = 0;
-					BFS();
-					yunhab[Number_yunhab] = temp_sum / temp;
-//					cout << yunhab[Number_yunhab] << endl;
-//					cout << Number_yunhab << endl;
+				if(first_check(i,j)){
+					if(checked[i][j] == 0){
+						Number_yunhab = Number_yunhab + 1;
+						x_y.push({ i,j });
+						checked[i][j] = Number_yunhab;
+						temp = 0;
+						temp_sum = 0;
+						BFS();
+						yunhab[Number_yunhab] = temp_sum / temp;
+		//				cout << yunhab[Number_yunhab] << endl;
+		//				cout << Number_yunhab << endl;
+					}
 				}
 			}
 		}
 		if (is_end == 0) break;
 		++sum;
+
+		// 6,250,000 -> 쭉 내려감.
 		for (int i = 0; i < N; i++) {//50
 			for (int j = 0; j < N; j++) {//50
-				for (int k = 1; k <= Number_yunhab; k++) {//2500
+				for (int k = 1; k <= Number_yunhab; k++) {//2500 -> 쭉 내려가겠찌.
 					if (checked[i][j] == k) {
 						board[i][j] = yunhab[k];
 					}
@@ -151,5 +162,6 @@ int main() {
 //		debug();
 	}
 	cout << sum;
+
 	system("pause");
 }
