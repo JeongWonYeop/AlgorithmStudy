@@ -122,7 +122,9 @@ int main() {
 	while(true){
 		is_end = 0;
 		int Number_yunhab = 0;
-		memset(checked, 0, sizeof(checked));
+		for (int i = 0;  i < N; i++) {
+			memset(checked[i], 0, sizeof(int)*N);
+		}
 		for(int i = 0 ; i < N; i++){//50
 			for(int j = 0 ; j < N; j++){//50
 				if(first_check(i,j)){
@@ -158,5 +160,5 @@ int main() {
 //		debug();
 	}
 	cout << sum;
-
+	system("pause");
 }
