@@ -78,25 +78,25 @@ void make_que() {
 }
 
 void start() {
-	cout << endl;
-	cout << season++ << "년이 지난 뒤의 상황" << endl;
-	cout << endl;
+//	cout << endl;
+//	cout << season++ << "년이 지난 뒤의 상황" << endl;
+//	cout << endl;
 	while (!que.empty()) {
 		Pair_int frontt = que.front();
 		int t_x = frontt.first;
 		int t_y = frontt.second;
 		int t_energy = 0;
 		sort(tree_info[t_x][t_y].begin(), tree_info[t_x][t_y].end(), less<int>());
-		cout << "현재 양분 : " << engergy[t_x][t_y] << endl;
+//		cout << "현재 양분 : " << engergy[t_x][t_y] << endl;
 		for (vector<int> ::iterator iter = tree_info[t_x][t_y].begin(); iter != tree_info[t_x][t_y].end(); ) {
 			if (engergy[t_x][t_y] >= *iter) {
-				cout << "x : " << t_x << "y : " << t_y << "에 위치한 나무 나이 " << *iter << "가 양분을 먹고 나이 1 먹을 것." << endl;
+	//			cout << "x : " << t_x << "y : " << t_y << "에 위치한 나무 나이 " << *iter << "가 양분을 먹고 나이 1 먹을 것." << endl;
 				engergy[t_x][t_y] = engergy[t_x][t_y] - *iter;
 
 				(*iter)++;
 				iter++;
 			}else {
-				cout << "x : " << t_x << "y : " << t_y << "에 위치한 나무 나이 " << *iter << "가 사망" << endl;
+		//		cout << "x : " << t_x << "y : " << t_y << "에 위치한 나무 나이 " << *iter << "가 사망" << endl;
 				t_energy = t_energy  + (*iter) / 2;
 				iter = tree_info[t_x][t_y].erase(iter);
 			}
@@ -111,9 +111,9 @@ void start() {
 			for (int i = 0; i < tree_info[t_x][t_y].size(); i++) {
 				checked[t_x][t_y] = 1;
 				if (tree_info[t_x][t_y][i] % 5 == 0) {
-					cout << "증식을 시작한다 그 값은 :";
+	//				cout << "증식을 시작한다 그 값은 :";
 					for_increase.push({ t_x,t_y });
-					cout << tree_info[t_x][t_y][i] << endl;
+	//				cout << tree_info[t_x][t_y][i] << endl;
 			
 				}
 			}
