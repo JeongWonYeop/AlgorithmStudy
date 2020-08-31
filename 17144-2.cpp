@@ -1,151 +1,203 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <stdlib.h>
+#include <cstring>
+#include <string>
+#include <vector>
 #include <queue>
+#include <functional>
 #include <utility>
 using namespace std;
-
-int x, y, countt;
-int arr[51][51] = { 0, };
-pair <int, int> axis;
-queue< pair <int, int> > axque;
-queue< pair <int, int> > queuee;
-queue <int> beforeDust;
+int A[50][50];
+int checked[50][50] = { 0, };
+int temp_cal[50][50] = { 0, };
+int dx[4] = {0,0,-1,1};
+int dy[4] = {-1,1,0,0};
+vector < pair<int,int> > w_m;
+typedef pair <int,int> Pair_int;
+queue <Pair_int> temp_xy;
 int sum = 0;
-
-void makemap() {
-	for (int i = 0; i < x + 2; i++) {
-		arr[i][0] = -2;
-	}
-	for (int i = 0; i < y + 2; i++) {
-		arr[0][i] = -2;
-	}
-	for (int i = 0; i < x + 2; i++) {
-		arr[i][y+1] = -2;
-	}
-	for (int i = 0; i < x + 2; i++) {
-		arr[x+1][i] = -2;
-	}
-}
-
-void input(){
-	cin >> x >> y >> countt;
-	for (int i = 1; i < x + 1; i++) {
-		for (int j = 1; j < y + 1; j++) {
-			cin >> arr[i][j];
-			if (arr[i][j] == -1) {
-				axis = make_pair(i, j);
-				axque.push(axis);
+/*
+좌,우,위,아래
+00 01
+10 11
+*/
+int R, C, T;
+void enter() {
+	cin >> R >> C >> T;
+	for (int i = 0; i < R; i++) {
+		for (int j = 0; j < C; j++) {
+			cin >> A[i][j];
+			if (A[i][j] > 0) {
+				checked[i][j] = 1;
 			}
-			if (arr[i][j] >= 5) {
-				axis = make_pair(i, j);
-				queuee.push(axis);
-				beforeDust.push(arr[i][j]);
+			else if (A[i][j] == -1) {
+				checked[i][j] = -1;
+				w_m.push_back({ i,j });
 			}
 		}
 	}
 
 }
-void dustSpread(int x, int y) {
-	int a = beforeDust.front() / 5;
-	if (arr[x - 1][y] != -2 && arr[x - 1][y] != -1) { 
-		arr[x - 1][y] = arr[x - 1][y] + a; 
-		arr[x][y] = arr[x][y] - a;
-	}
-	if (arr[x][y + 1] != -2 && arr[x][y + 1] != -1) {
-		arr[x][y + 1] = arr[x][y + 1] + a;
-		arr[x][y] = arr[x][y] - a;
-	}
-	if (arr[x + 1][y] != -2 && arr[x + 1][y] != -1) {
-		arr[x + 1][y] = arr[x + 1][y] + a;
-		arr[x][y] = arr[x][y] - a;
-	}
-	if (arr[x][y - 1] != -2 && arr[x][y - 1] != -1) {
-		arr[x][y - 1] = arr[x][y - 1] + a;
-		arr[x][y] = arr[x][y] - a;
-	}
-	beforeDust.pop();
-}
-void Airstream() {
-	int x1 = axque.front().first;
-	int y1 = axque.front().second;
-	axque.pop();
-	for (int i = x1-1; i > 1; i--) {
-		arr[i][1] = arr[i - 1][1];
-	}
-	for (int i = 1; i < y; i++) {
-		arr[1][i] = arr[1][i + 1];
-	}
-	for (int i = 1; i < x1; i++) {
-		arr[i][y] = arr[i + 1][y];
-	}
-	for (int i = y; i > 2; i--) {
-		arr[x1][i] = arr[x1][i - 1];
-	}
-	arr[x1][2] = 0;
 
-	int x2 = axque.front().first;
-	int y2 = axque.front().second;
-	for (int i = x2 + 1; i < x; i++) {
-		arr[i][1] = arr[i + 1][1];
+void start() {
+	int cnt;
+	for (int i = 0; i < R; i++) {
+		for (int j = 0; j < C; j++) {
+			if (checked[i][j] == 1) {
+				if (A[i][j] / 5 == 0) continue;
+				cnt = 0;
+				for(int k = 0 ; k <4;k++){
+					int n_x = i + dx[k];
+					int n_y = j + dy[k];
+					if (n_x >= 0 && n_x < R && n_y >= 0 && n_y < C && checked[n_x][n_y] != -1) {
+						temp_cal[n_x][n_y] += A[i][j] / 5;
+						++cnt;
+						temp_xy.push({ n_x,n_y });
+					}
+;				}
+				A[i][j] = A[i][j] - ((A[i][j] / 5) * cnt);
+			}
+		}
 	}
-	for (int i = y2; i < y; i++) {
-		arr[x][i] = arr[x][i + 1];
-	}
-	for (int i = x; i > x2; i--) {
-		arr[i][y] = arr[i - 1][y];
-	}
-	for (int i = y; i > y2 + 1; i--) {
-		arr[x2][i] = arr[x2][i - 1];
-	}
-	arr[x2][y2 + 1] = 0;
-	axque.pop();
-}
 
-void draw() {
-	for (int i = 1; i < x + 1; i++) {
-		for (int j = 1; j < y + 1; j++) {
-			cout << arr[i][j] << " ";
+	while (!temp_xy.empty()) {
+		Pair_int t_xy;
+		t_xy =temp_xy.front();
+		checked[t_xy.first][t_xy.second] = 1;
+		temp_xy.pop();
+	}
+
+	for (int i = 0; i < R; i++) {
+		for (int j = 0; j < C; j++) {
+			if (checked[i][j] == 1) {
+				A[i][j] += temp_cal[i][j];
+			}
+		}
+	}
+
 	
-		}
-		cout << endl;
-	}
+}
+void initialize() {
+	memset(temp_cal, 0, sizeof(temp_cal));
 }
 
-void refillqueue() {
-	for (int i = 1; i < x + 1; i++) {
-		for (int j = 1; j < y + 1; j++) {
-			if (arr[i][j] == -1) {
-				axis = make_pair(i, j);
-				axque.push(axis);
-			}
-			if (arr[i][j] >= 5) {
-				axis = make_pair(i, j);
-				queuee.push(axis);
-				beforeDust.push(arr[i][j]);
+void debug() {
+	for (int i = 0; i < R; i++) {
+		for (int j = 0; j < C; j++) {
+			cout << A[i][j] << " ";
+		}cout << endl;
+	}
+	cout << endl << endl;
+	for (int i = 0; i < R; i++) {
+		for (int j = 0; j < C; j++) {
+			cout << checked[i][j] << " ";
+		}cout << endl;
+	}
+
+}
+
+
+void wind() {
+	/*
+	2,0
+	"왼쪽을 기준으로"
+	2,0 <- 1,0 <- 0,0 
+	0,0 <- 0,1 <- 0,2 <- 0,3 <- 0,4 <- 0,5 <- 0,6 <- 0,7
+	0,7 <- 1,7 <- 2,7
+	2,7 <- 2,6 <- 2,5 <- 2,4 <- 2,3 <- 2,2 <- 2,1 <- 2,0
+
+
+
+	*/
+	int u_x, u_y, d_x, d_y;
+	u_x = w_m[0].first;
+	u_y = w_m[0].second;
+	d_x = w_m[1].first;
+	d_y = w_m[1].second;
+//	cout << u_x <<" " <<u_y << endl;
+//	cout << d_x << " " << d_y << endl;
+
+	for (int i = u_x; i > 0; i--) {
+		A[i][u_y] = A[i - 1][u_y];
+		checked[i][u_y] = checked[i - 1][u_y];
+	}
+	for (int i = 0; i < C-1; i++) {
+		A[0][i] = A[0][i + 1];
+		checked[0][i] = checked[0][i + 1];
+	}
+	for (int i = 0; i < u_x; i++) {
+		A[i][C - 1] = A[i + 1][C - 1];
+		checked[i][C - 1] = checked[i + 1][C - 1];
+	}
+	for (int i = C - 1; i > 0; i--) {
+		if (i == 1) {
+			A[u_x][i] = 0;
+			checked[u_x][i] = 0;
+		}
+		else { 
+			A[u_x][i] = A[u_x][i - 1];
+			checked[u_x][i] = checked[u_x][i - 1];
+		}
+	}
+	A[u_x][u_y] = -1;
+	checked[u_x][u_y] = -1;
+	/*
+	3 0
+
+	3,0 <- 4,0 <- 5,0 <- 6,0 
+	6,0 <-6,1 <- 6,2 <- 6,3 <- 6,4 <- 6,5 <- 6,6 <- 6,7
+	6,7<- 5,7<-4,7<-3,7
+	3,7<- 3,6<-3,5<-3,4<-3,3<-3,2<-3,1<-3,0
+	*/
+	
+	for (int i = d_x; i < R - 1; i++) {
+		A[i][0] = A[i + 1][0];
+		checked[i][0] = checked[i + 1][0];
+	}
+	for (int i = 0; i < C - 1; i++) {
+		A[R - 1][i] = A[R - 1][i + 1];
+		checked[R - 1][i] = checked[R - 1][i + 1];
+	}
+	for (int i = R - 1; i > d_x; i--) {
+		A[i][C - 1] = A[i - 1][C - 1];
+		checked[i][C - 1] = checked[i - 1][C - 1];
+	}
+	for (int i = C - 1; i > 0; i--) {
+		if (i == 1) {
+			A[d_x][i] = 0;
+			checked[d_x][i] = 0;
+		}
+		else {
+			A[d_x][i] = A[d_x][i - 1];
+			checked[d_x][i] = checked[d_x][i - 1];
+		}
+	}
+	A[d_x][d_y] = -1;
+	checked[d_x][d_y] = -1;
+
+
+}
+void sum_cal() {
+	for (int i = 0; i < R; i++) {
+		for (int j = 0; j < C; j++) {
+			if (checked[i][j] == 1) {
+				sum += A[i][j];
 			}
 		}
 	}
+
 }
 
 int main() {
-	input();
-	makemap();
-	for(int i = 0 ; i < countt; i++){
-		while (!queuee.empty()) {
-			dustSpread(queuee.front().first, queuee.front().second);
-			queuee.pop();
-		}
-		Airstream();
-		refillqueue();
+	enter();
+	for(int i = 0; i < T; i++){
+		initialize();
+		start();
+		wind();
 	}
 
-	for (int i = 1; i < x + 1; i++) {
-		for (int j = 1; j < y + 1; j++) {
-			sum = sum + arr[i][j];
-		}
-	}
-	sum = sum + 2;
+	sum_cal();
 	cout << sum;
 	system("pause");
 }
