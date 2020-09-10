@@ -141,8 +141,14 @@ void shark_move() {
 					int row = i - 1;
 					if (row >= t_shark_speed) {
 						shark_position[i][j]--;
-						
-						shark_position[i- t_shark_speed][j]++;
+						if (shark_position[i - t_shark_speed][j] > 0) {
+							if (shark_size[i][j] > shark_size[i - t_shark_speed][j]) {
+								shark_size[i - t_shark_speed][j] = shark_size[i][j];
+								shark_speed[i - t_shark_speed][j] = shark_speed[i][j];
+								shark_position[i - t_shark_speed][j]++;
+							}
+
+						}else shark_position[i- t_shark_speed][j]++;
 						
 
 						continue;
@@ -152,37 +158,70 @@ void shark_move() {
 						if (evenn(t_shark_speed / (R - 1))) {
 							change_orient(i, j);
 							shark_position[i][j]--;
-							cout << t_shark_speed % (R - 1) << endl;
-							shark_position[1 + t_shark_speed % (R-1)][j]++;
+							if (shark_position[1 + t_shark_speed % (R - 1)][j] > 0) {
+								if (shark_size[i][j] > shark_size[1 + t_shark_speed % (R - 1)][j]) {
+									shark_size[1 + t_shark_speed % (R - 1)][j] = shark_size[i][j];
+									shark_speed[1 + t_shark_speed % (R - 1)][j] = shark_speed[i][j];
+									shark_position[1 + t_shark_speed % (R - 1)][j]++;
+								}
+
+							}else shark_position[1 + t_shark_speed % (R-1)][j]++;
 						}
 						else {
-							shark_position[i][j]--;
-							cout << t_shark_speed % (R - 1) << endl;
-							shark_position[R - t_shark_speed % (R-1)][j]++;
+							shark_position[i][j]--;		
+							if (shark_position[R - t_shark_speed % (R - 1)][j] > 0) {
+								if (shark_size[i][j] > shark_size[R - t_shark_speed % (R - 1)][j]) {
+									shark_size[R - t_shark_speed % (R - 1)][j] = shark_size[i][j];
+									shark_speed[R - t_shark_speed % (R - 1)][j] = shark_speed[i][j];
+									shark_position[R - t_shark_speed % (R - 1)][j]++;
+								}
+
+							}
+							else shark_position[R - t_shark_speed % (R-1)][j]++;
 						}
 					}
 				}
 				else if (shark_orient[i][j] == 2) {
-					cout << "¾Æ·¡" << endl;
 					int Row = R - i;
 					if (Row >= t_shark_speed) {
-						cout << "1" << endl;
 						shark_position[i][j]--;
-						shark_position[i + t_shark_speed][j]++;
+						if (shark_position[i + t_shark_speed][j] > 0) {
+							if (shark_size[i][j] > shark_size[i + t_shark_speed][j]) {
+								shark_size[i + t_shark_speed][j] = shark_size[i][j];
+								shark_speed[i + t_shark_speed][j] = shark_speed[i][j];
+								shark_position[i + t_shark_speed][j]++;
+							}
+
+						}
+						else shark_position[i + t_shark_speed][j]++;
 						continue;
 					}
 					else {
 						t_shark_speed -= Row;
 						if (evenn(t_shark_speed / (R - 1))) {
-							cout << "2" << endl;
 							change_orient(i, j);
 							shark_position[i][j]--;
-							shark_position[R - t_shark_speed % (R - 1)][j]++;
+							if (shark_position[R - t_shark_speed % (R - 1)][j] > 0) {
+								if (shark_size[i][j] > shark_size[R - t_shark_speed % (R - 1)][j]) {
+									shark_size[R - t_shark_speed % (R - 1)][j] = shark_size[i][j];
+									shark_speed[R - t_shark_speed % (R - 1)][j] = shark_speed[i][j];
+									shark_position[R - t_shark_speed % (R - 1)][j]++;
+								}
+
+							}
+							else shark_position[R - t_shark_speed % (R - 1)][j]++;
 						}
 						else {
-							cout << "3" << endl;
 							shark_position[i][j]--;
-							shark_position[1 + t_shark_speed % (R - 1)][j]++;
+							if (shark_position[1 + t_shark_speed % (R - 1)][j] > 0) {
+								if (shark_size[i][j] > shark_size[1 + t_shark_speed % (R - 1)][j]) {
+									shark_size[1 + t_shark_speed % (R - 1)][j] = shark_size[i][j];
+									shark_speed[1 + t_shark_speed % (R - 1)][j] = shark_speed[i][j];
+									shark_position[1 + t_shark_speed % (R - 1)][j]++;
+								}
+
+							}
+							else shark_position[1 + t_shark_speed % (R - 1)][j]++;
 						}
 					}
 				}
@@ -198,37 +237,44 @@ void shark_move() {
 					int col = C - j;
 						if (col >= t_shark_speed) {
 							shark_position[i][j]--;
-							shark_position[i][j + t_shark_speed]++;
+							if (shark_position[i][j + t_shark_speed] > 0) {
+								
+								if (shark_size[i][j] > shark_size[i][j + t_shark_speed]) {
+									shark_size[i][j + t_shark_speed] = shark_size[i][j];
+									shark_speed[i][j + t_shark_speed] = shark_speed[i][j];
+									shark_position[i][j + t_shark_speed]++;
+								}
+
+							}
+							else shark_position[i][j + t_shark_speed]++;
 							continue;
 						}
 						else {
 							t_shark_speed -= col;
-							if (t_shark_speed % (C - 1) == 0) {
-								if (evenn(t_shark_speed / (C - 1))) {//Â¦¼ö 0 2 4
-									shark_position[i][j]--;
-									shark_position[i][C]++;
-								}
-								else {//È¦¼ö 1 3 5
-									change_orient(i, j);
-									shark_position[i][j]--;
-									shark_position[i][1]++;
-								}
-								continue;
-							}
 							if (evenn(t_shark_speed / (C - 1))) {//Â¦¼ö
-								cout << t_shark_speed / (C - 1) << endl;
-								cout << t_shark_speed << endl;
-								cout << "¿©±â" << endl;
 								change_orient(i, j);
 								shark_position[i][j]--;
-								shark_position[i][C - t_shark_speed % (C - 1)]++;
+								if (shark_position[i][C - t_shark_speed % (C - 1)] > 0) {
+									if (shark_size[i][j] > shark_size[i][C - t_shark_speed % (C - 1)]) {
+										shark_size[i][C - t_shark_speed % (C - 1)] = shark_size[i][j];
+										shark_speed[i][C - t_shark_speed % (C - 1)] = shark_speed[i][j];
+										shark_position[i][C - t_shark_speed % (C - 1)]++;
+									}
+
+								}
+								else shark_position[i][C - t_shark_speed % (C - 1)]++;
 							}
 							else { //È¦¼öÀÏ ¶§
-								cout << t_shark_speed / (C - 1) << endl;
-								cout << t_shark_speed << endl;
-								cout << "Àú±â" << endl;
-								shark_position[i][j]--;
-								shark_position[i][1 + t_shark_speed % (C - 1)]++;
+								shark_position[i][j]--; 
+								if (shark_position[i][1 + t_shark_speed % (C - 1)] > 0) {
+									if (shark_size[i][j] > shark_size[i][1 + t_shark_speed % (C - 1)]) {
+										shark_size[i][1 + t_shark_speed % (C - 1)] = shark_size[i][j];
+										shark_speed[i][1 + t_shark_speed % (C - 1)] = shark_speed[i][j];
+										shark_position[i][1 + t_shark_speed % (C - 1)]++;
+									}
+
+								}
+								else shark_position[i][1 + t_shark_speed % (C - 1)]++;
 							}
 						}
 
@@ -238,7 +284,15 @@ void shark_move() {
 					int col = j - 1;
 					if (col >= t_shark_speed) {
 						shark_position[i][j]--;
-						shark_position[i][j - t_shark_speed]++;
+						if (shark_position[i][j - t_shark_speed] > 0) {
+							if (shark_size[i][j] > shark_size[i][j - t_shark_speed]) {
+								shark_size[i][j - t_shark_speed] = shark_size[i][j];
+								shark_speed[i][j - t_shark_speed] = shark_speed[i][j];
+								shark_position[i][j - t_shark_speed]++;
+							}
+
+						}
+						else shark_position[i][j - t_shark_speed]++;
 						continue;
 					}
 					else {
@@ -246,12 +300,27 @@ void shark_move() {
 						if (evenn(t_shark_speed / (C-1))) {
 							change_orient(i,j);
 							shark_position[i][j]--;
-							cout << t_shark_speed % (C - 1) << endl;
-							shark_position[i][1 + t_shark_speed % (C-1)]++;
+							if (shark_position[i][1 + t_shark_speed % (C - 1)] > 0) {
+								if (shark_size[i][j] > shark_size[i][1 + t_shark_speed % (C - 1)]) {
+									shark_size[i][1 + t_shark_speed % (C - 1)] = shark_size[i][j];
+									shark_speed[i][1 + t_shark_speed % (C - 1)] = shark_speed[i][j];
+									shark_position[i][1 + t_shark_speed % (C - 1)]++;
+								}
+
+							}
+							else shark_position[i][1 + t_shark_speed % (C-1)]++;
 						}
 						else {
 							shark_position[i][j]--;
-							shark_position[i][C - t_shark_speed % (C-1)]++;
+							if (shark_position[i][C - t_shark_speed % (C - 1)] > 0) {
+								if (shark_size[i][j] > shark_size[i][C - t_shark_speed % (C - 1)]) {
+									shark_size[i][C - t_shark_speed % (C - 1)] = shark_size[i][j];
+									shark_speed[i][C - t_shark_speed % (C - 1)] = shark_speed[i][j];
+									shark_position[i][C - t_shark_speed % (C - 1)]++;
+								}
+
+							}
+							else shark_position[i][C - t_shark_speed % (C-1)]++;
 						}
 					}
 				}
@@ -311,6 +380,8 @@ int main() {
 		enter();
 		debug();
 
+		shark_move();
+		debug();
 		shark_move();
 		debug();
 	}
