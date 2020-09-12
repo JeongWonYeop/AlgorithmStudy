@@ -13,7 +13,17 @@ using namespace std;
 	그거를 조합으로 이제 하나씩 ex.2 3 4 5뽑아라.
 		기존의 orders를 하나하나 비교하면서 각 구성별로 포함돼있는거 비교해보라 만약 2이상되는순간 후보벡터에 추가하고 return.
 
+		https://gall.dcinside.com/mgallery/board/view/?id=ps&no=9683&_rk=tDL&page=1
+		//vector orders = { "ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH" };
+		//vector course = { 2,3,4 };
+		이면
 
+		AB AC AF AG BC BF BG CF CG FG AC CD DE CE .............
+		여기서 빈도수 최대인 문자열
+		ABC, ABF, ABG ACF ACG AFG ..... CDE ACD ACE ADE ......
+		여기서 빈도수 최대인 문자열
+		ABCF ABCG ACFG .....
+		여기서 빈도수 최대인 문자열 을 구하는거였음?
 
 */
 int check_course[50] = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,0 };
