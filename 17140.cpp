@@ -20,7 +20,7 @@ int b_r = 3;
 int b_c = 3;
 int check[101];
 struct cmp {
-	bool operator()(Pair_int a, Pair_int b) { 
+	bool operator()(Pair_int a, Pair_int b) { //
 		if (a.second == b.second) {
 			return a.first > b.first;
 		}
