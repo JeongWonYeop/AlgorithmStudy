@@ -23,9 +23,9 @@ struct cmp {
 	bool operator()(Pair_int a, Pair_int b) {
 		
 		if (a.first == b.first) {
-			return a.second < b.second;
+			return a.second > b.second;
 		}
-		else return a.first < b.first;
+		else return a.first > b.first;  //오름차순 1 2 3 4
 	}
 };
 
