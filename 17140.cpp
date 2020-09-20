@@ -48,8 +48,8 @@ void R_cal() {
 		memcpy(copy_A[i], A[i], sizeof(int)*b_c+1); //sizeof(int)*b_c+1는 4인데, 그래야만 0~3까지 인자를 카피한다.
 	}
 	for (int i = 1; i <= b_r; i++) {
-		memset(A[i],0, sizeof(int)*b_c+1);
-	}
+		memset(A[i],0, sizeof(int)*b_c+1); //memset과 memcpy의 마지막 인자인 size는 0 부터 해당 size까지 의 크기를 COPY or SET 하는 것이다.
+	}										// 4면 0~3
 
 	for (int i = 1; i <= b_r; i++) {
 		memset(check, 0, sizeof(check));
