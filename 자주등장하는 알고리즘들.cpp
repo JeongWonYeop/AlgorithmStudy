@@ -13,7 +13,7 @@ map 자료구조
 https://gall.dcinside.com/mgallery/board/view/?id=ps&no=9469&_rk=zx3&exception_mode=recommend&page=1
 세그트리 + lazy propagation
 
-
+https://justicehui.github.io/tutorial/2020/09/05/graph-with-segment-tree/
 
 
 
