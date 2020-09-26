@@ -122,7 +122,7 @@ void playturn() {
 	while (true) {//1000
 		int turn = 1;
 		cnt++;
-		cout << "----------CNT :" << cnt << "---------" << endl;
+		//cout << "----------CNT :" << cnt << "---------" << endl;
 		for (vector <Pair_int>::iterator i = target_x_y.begin() + 1; i < target_x_y.end(); i++) { //O(10)
 			//cout << "turnÀÇ °ª :" <<turn << endl;
 			int xx = (*i).first;
@@ -135,7 +135,7 @@ void playturn() {
 			int Num = board_info[xx][yy][pos-1].first;
 			int Orient = board_info[xx][yy][pos-1].second;
 		//	cout << "Num :" << Num << endl;
-		//	cout << "Orient :" << Orient << endl;
+	//	cout << "Orient :" << Orient << endl;
 			int n_xx = xx + dx[Orient];
 		//	cout << "n_xx : " << n_xx << endl;
 			int n_yy = yy + dy[Orient]; 
@@ -162,6 +162,7 @@ void playturn() {
 					if (END == 1) break;
 				}else if (board[n_xx][n_yy] == 1) { //»¡°£»ö 0  1  2  3
 					for (vector <Pair_int>::iterator j = board_info[xx][yy].end()-1; j >= board_info[xx][yy].begin()+ pos-1; j--) {
+
 						board_info[n_xx][n_yy].push_back({ (*j).first,(*j).second });
 						target_sum[n_xx][n_yy] ++;
 						target_sum[xx][yy]--;
@@ -187,10 +188,8 @@ void playturn() {
 				else { // ÆÄ¶õ»ö 
 					n_xx = xx + dx[reverse(Orient)];
 					n_yy = yy + dy[reverse(Orient)];
-
-//cout << n_xx << " " << n_yy << endl;
-					if (board[n_xx][n_yy] == 2) {
-						board_info[xx][yy][pos - 1].second = reverse(board_info[xx][yy][pos - 1].second);
+					board_info[xx][yy][pos - 1].second = reverse(board_info[xx][yy][pos - 1].second);
+					if (board[n_xx][n_yy] == 2 || n_xx>N || n_yy>N ||n_xx <1 ||n_yy<1) {
 					}
 					else if (board[n_xx][n_yy] == 1) { //»¡°£»ö 0  1  2  3
 							
@@ -202,7 +201,7 @@ void playturn() {
 								END = 1;
 								break;
 							};
-
+			
 							for (int k = 1; k < target_x_y.size(); k++) {
 								if ((*j).first == k) {
 									target_x_y[k].first = n_xx;
@@ -215,7 +214,8 @@ void playturn() {
 						if (END == 1) break;
 					}
 					else if (board[n_xx][n_yy] == 0) { //Èò»ö
-			
+
+					//	cout << n_xx << " " << n_yy << endl;
 						for (vector <Pair_int>::iterator j = board_info[xx][yy].begin() + pos - 1; j < board_info[xx][yy].end(); j++) {
 							board_info[n_xx][n_yy].push_back({ (*j).first,(*j).second });
 							target_sum[n_xx][n_yy] ++;
@@ -232,6 +232,8 @@ void playturn() {
 									target_x_y[k].second = n_yy;
 								}
 							}
+
+						
 						}
 						board_info[xx][yy].erase(board_info[xx][yy].begin() + pos - 1, board_info[xx][yy].end());
 						if (END == 1) break;
@@ -239,16 +241,13 @@ void playturn() {
 				}
 			}
 			else {
-				{ // ÆÄ¶õ»ö 
 					n_xx = xx + dx[reverse(Orient)];
 					n_yy = yy + dy[reverse(Orient)];
-
-					//cout << n_xx << " " << n_yy << endl;
+					board_info[xx][yy][pos - 1].second = reverse(board_info[xx][yy][pos - 1].second);
+				
 					if (board[n_xx][n_yy] == 2) {
-						board_info[xx][yy][pos - 1].second = reverse(board_info[xx][yy][pos - 1].second);
 					}
 					else if (board[n_xx][n_yy] == 1) { //»¡°£»ö 0  1  2  3
-
 						for (vector <Pair_int>::iterator j = board_info[xx][yy].end() - 1; j >= board_info[xx][yy].begin() + pos - 1; j--) {
 							board_info[n_xx][n_yy].push_back({ (*j).first,(*j).second });
 							target_sum[n_xx][n_yy] ++;
@@ -257,30 +256,32 @@ void playturn() {
 								END = 1;
 								break;
 							};
-
+				
 							for (int k = 1; k < target_x_y.size(); k++) {
 								if ((*j).first == k) {
 									target_x_y[k].first = n_xx;
 									target_x_y[k].second = n_yy;
 								}
 							}
-							if (j == board_info[xx][yy].begin() + pos - 1) break;
+							if (j == board_info[xx][yy].begin() + pos - 1) {
+								(*j).second = reverse(board_info[xx][yy][pos - 1].second);
+								break;
+							}
 						}
 						board_info[xx][yy].erase(board_info[xx][yy].begin() + pos - 1, board_info[xx][yy].end());
 						if (END == 1) break;
 					}
 					else if (board[n_xx][n_yy] == 0) { //Èò»ö
-
 						for (vector <Pair_int>::iterator j = board_info[xx][yy].begin() + pos - 1; j < board_info[xx][yy].end(); j++) {
 							board_info[n_xx][n_yy].push_back({ (*j).first,(*j).second });
 							target_sum[n_xx][n_yy] ++;
 							target_sum[xx][yy]--;
+				//			cout << board_info[xx][yy][pos - 1].second << endl;
 							if (is_End(n_xx, n_yy) == 1) {
 								END = 1;
 								break;
 							};
-
-
+						
 							for (int k = 1; k < target_x_y.size(); k++) {
 								if ((*j).first == k) {
 									target_x_y[k].first = n_xx;
@@ -291,11 +292,11 @@ void playturn() {
 						board_info[xx][yy].erase(board_info[xx][yy].begin() + pos - 1, board_info[xx][yy].end());
 						if (END == 1) break;
 					}
-				}
+				
 			}
 
 		
-			debug();
+			//debug();
 			turn++;
 		}
 		if (END == 1) {
