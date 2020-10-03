@@ -44,48 +44,42 @@ int d; // 0 시계 1 반시계
 int k; // 몇칸
 */
 void wheel(int x, int d, int k) {
-	for (int i = 1; i <= N; i++) {
-		if (i%x == 0) {
-			/*
-			d가 시계일 때,
-				index가 1부터 M까지. k만큼 더한다. 
-				만약에 index+k가 M보다 크면,
-					new_board[i][(index+k)%4] = board[i][index];
-				그게아니면,
-					new_board[i][index+k]  = board[i][index];
+	for (int i = x; i <= N; i += x) {
+		/*
+		d가 시계일 때,
+			index가 1부터 M까지. k만큼 더한다.
+			만약에 index+k가 M보다 크면,
+				new_board[i][(index+k)%4] = board[i][index];
+			그게아니면,
+				new_board[i][index+k]  = board[i][index];
 
-			d가 반시계일 때,
-				index가 1부터 M까지. k 만큼 뺀다.
-				만약에 index-k 가 1보다 작으면,
-					new_board[i][M- (index-k)*-1 % M] = board[i][index];
-				그게아니면,
-					new_board[i][index-k] = board[i][index];
-				M으로 나눴을 때 나머지가 0 이면 M 1이면 M-1 2이면 M-2 3이면 M-3  M-1이면 M-(M-1) 즉,1
-			*/
-			if (d == 0) {
-				for (int index = 1; index <= M; index++) {
-					if (index + k > M) {
-						new_board[i][(index + k) % M] = board[i][index];
-					}
-					else {
-						new_board[i][index + k] = board[i][index];
-					}
+		d가 반시계일 때,
+			index가 1부터 M까지. k 만큼 뺀다.
+			만약에 index-k 가 1보다 작으면,
+				new_board[i][M- (index-k)*-1 % M] = board[i][index];
+			그게아니면,
+				new_board[i][index-k] = board[i][index];
+			M으로 나눴을 때 나머지가 0 이면 M 1이면 M-1 2이면 M-2 3이면 M-3  M-1이면 M-(M-1) 즉,1
+		*/
+		if (d == 0) {
+			for (int index = 1; index <= M; index++) {
+				if (index + k > M) {
+					new_board[i][(index + k) % M] = board[i][index];
+				}
+				else {
+					new_board[i][index + k] = board[i][index];
 				}
 			}
-			else {
-				for (int index = 1; index <= M; index++) {
-					if (index - k < 1) {
-						new_board[i][M - ((index - k)*-1) % M] = board[i][index];
-					}
-					else {
-						new_board[i][index - k] = board[i][index];
-					}
+		}
+		else {
+			for (int index = 1; index <= M; index++) {
+				if (index - k < 1) {
+					new_board[i][M - ((index - k)*-1) % M] = board[i][index];
+				}
+				else {
+					new_board[i][index - k] = board[i][index];
 				}
 			}
-
-
-
-
 		}
 	}
 }
@@ -129,7 +123,7 @@ void yunsan() {
 				if (new_board[new_x][new_y] == new_board[i][j] && new_board[new_x][new_y]!=0) {
 				cout << new_x << "," << new_y << "그리고" << i << "," << j << endl;
 					injub = 1;
-					que.push({ new_x,new_y });
+					que.push({ i,j});
 				}
 			}
 			while (!que.empty()) {
@@ -176,7 +170,7 @@ void yunsan() {
 				}
 			}
 		}
-	//	debug();
+		debug();
 	}
 }
 
@@ -202,6 +196,6 @@ int main() {
 		iter++;
 	}
 	int answer = get_sum();
-	cout << answer;
+	cout << (int)answer;
 	system("pause");
 }
