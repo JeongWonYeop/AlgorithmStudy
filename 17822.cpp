@@ -48,6 +48,10 @@ void wheel(int x, int d, int k) {
 		/*
 		d가 시계일 때,
 			index가 1부터 M까지. k만큼 더한다.
+			M = 5, k = 1 라치고.
+			for index 가 1부터 M까지
+			index + k가 만약 M보다 크면..
+			1 2 3 4 5
 			만약에 index+k가 M보다 크면,
 				new_board[i][(index+k)%4] = board[i][index];
 			그게아니면,
@@ -64,7 +68,10 @@ void wheel(int x, int d, int k) {
 		if (d == 0) {
 			for (int index = 1; index <= M; index++) {
 				if (index + k > M) {
-					new_board[i][(index + k) % M] = board[i][index];
+					if ((index + k) % M == 0) {
+						new_board[i][M] = board[i][index];
+					}
+					else new_board[i][(index + k) % M] = board[i][index];
 				}
 				else {
 					new_board[i][index + k] = board[i][index];
@@ -121,7 +128,7 @@ void yunsan() {
 				if (new_x == 0 || new_y == 0 || new_x == N + 1) continue;
 				if (new_y == M + 1) new_y = 1;
 				if (new_board[new_x][new_y] == new_board[i][j] && new_board[new_x][new_y]!=0) {
-				cout << new_x << "," << new_y << "그리고" << i << "," << j << endl;
+			cout << new_x << "," << new_y << "그리고" << i << "," << j << endl;
 					injub = 1;
 					que.push({ i,j});
 				}
@@ -196,6 +203,6 @@ int main() {
 		iter++;
 	}
 	int answer = get_sum();
-	cout << (int)answer;
+	cout << (int)answer<<endl;
 	system("pause");
 }
