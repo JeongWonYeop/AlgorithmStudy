@@ -23,3 +23,21 @@ What i learn during 150 hours from learning algorithm.
 
 - 벡터의 erase(주솟값) 함수는 지우고 나면 벡터의 크기도 그만큼 줄고, 삭제된 뒤의 벡터값들이 앞으로 그만큼 당겨진다. 그리고 삭제된 해당 주솟값(위치)을 반환한다.
 - 벡터의 erase(start, end) 는 [start, end) 의 범위를 삭제한다.
+
+- operator() 직접 구현하여 오름차순. operator 빈틈이 있으면 오류떠
+
+  struct cmp {
+	bool operator()(Pair x, Pair y){ //여러개다. 벡터에 투입되는 값들이. 하나의 값 안에서 비교하는게 아니라, 여러개의 값들을 서로 비교하는 거야. 
+		if(x.first == y.first){
+			return x.second > y.second;
+		}
+		return x.first > y.first;
+	}
+  }
+
+
+  int main(){
+	priority_queue< Pair, vector <Pair>,cmp> pq;
+	pq.push(make_pair(1,2));
+	pq.push(make_pair(2,3));
+	pq.push(make_pair(4,1));
